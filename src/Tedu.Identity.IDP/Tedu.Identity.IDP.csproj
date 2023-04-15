@@ -14,4 +14,8 @@
 
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="9.0.0" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Tedu.Infrastructure\Tedu.Infrastructure.csproj" />
+  </ItemGroup>
 </Project>

@@ -1,8 +1,24 @@
-﻿namespace Tedu.Identity.IDP.Extensions;
+﻿using Microsoft.Extensions.Configuration;
+using Tedu.Infrastructure.Configurations;
+
+namespace Tedu.Identity.IDP.Extensions;
 
 internal static partial class HostingExtensions
 {
-    private static IServiceCollection ConfigurIdentityServer(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddConfigurationSettings(this IServiceCollection services, IConfiguration configuration)
+    {
+        var databaseSettings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
+
+        if (databaseSettings is null)
+        {
+            throw new ArgumentNullException(nameof(databaseSettings));
+        }
+        services.AddSingleton(databaseSettings);
+
+        return services;
+    }
+
+    private static IServiceCollection ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddIdentityServer(options =>
         {
