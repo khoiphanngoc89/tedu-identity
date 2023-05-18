@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tedu.Identity.IDP", "src\Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tedu.Infrastructure", "src\Tedu.Infrastructure\Tedu.Infrastructure.csproj", "{CE41D0B9-AA8E-48D1-9B92-FAD1C7D65185}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A9236CC3-4A11-4925-B585-BCA44A53C5C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tedu.Domain", "src\Tedu.Domain\Tedu.Domain.csproj", "{CFE8AD1F-09E5-4FE9-A099-81261550569F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,18 @@ Global
 		{CE41D0B9-AA8E-48D1-9B92-FAD1C7D65185}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE41D0B9-AA8E-48D1-9B92-FAD1C7D65185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE41D0B9-AA8E-48D1-9B92-FAD1C7D65185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFE8AD1F-09E5-4FE9-A099-81261550569F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE8AD1F-09E5-4FE9-A099-81261550569F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE8AD1F-09E5-4FE9-A099-81261550569F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE8AD1F-09E5-4FE9-A099-81261550569F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D0D088AC-B670-4176-B9DC-F3E9335B7EDE} = {A9236CC3-4A11-4925-B585-BCA44A53C5C9}
+		{CE41D0B9-AA8E-48D1-9B92-FAD1C7D65185} = {A9236CC3-4A11-4925-B585-BCA44A53C5C9}
+		{CFE8AD1F-09E5-4FE9-A099-81261550569F} = {A9236CC3-4A11-4925-B585-BCA44A53C5C9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F245062D-4BDC-4779-AC5C-188907592A71}

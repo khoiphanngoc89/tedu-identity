@@ -1,5 +1,8 @@
 ﻿using Serilog;
 using Serilog.Sinks.Elasticsearch;
+using Tedu.Infrastructure.Configurations;
+using Tedu.Infrastructure.Extensions;
+
 
 namespace Tedu.Identity.IDP.Extensions;
 
@@ -53,5 +56,15 @@ internal static partial class HostingExtensions
         });
 
         return host;
+    }
+
+    public static string GetConnectionString(this IServiceCollection services)
+    {
+        var databaseSettings = services.GetOptions<DatabaseSettings>(nameof(DatabaseSettings));
+        if (databaseSettings is null)
+        {
+            throw new ArgumentNullException(nameof(databaseSettings));
+        }
+        return databaseSettings.ConnectionString;
     }
 }

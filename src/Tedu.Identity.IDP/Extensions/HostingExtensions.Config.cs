@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Tedu.Infrastructure.Configurations;
+﻿using Tedu.Infrastructure.Configurations;
 
 namespace Tedu.Identity.IDP.Extensions;
 
@@ -34,6 +33,18 @@ internal static partial class HostingExtensions
             .AddInMemoryClients(Config.Clients)
             .AddInMemoryApiResources(Config.ApiResources)
             .AddTestUsers(TestUsers.Users);
+        return services;
+    }
+
+    private static IServiceCollection ConfigreCors(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin()
+                                                                            .AllowAnyMethod()
+                                                                            .AllowAnyHeader());
+        });
+
         return services;
     }
 }

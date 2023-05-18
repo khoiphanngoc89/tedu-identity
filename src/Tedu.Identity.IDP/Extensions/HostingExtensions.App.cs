@@ -15,6 +15,7 @@ internal static partial class HostingExtensions
 
         // uncomment if you want to add a UI
         app.UseStaticFiles();
+        app.UseCors("CorsPolicy");
         app.UseRouting();
 
         app.UseIdentityServer();

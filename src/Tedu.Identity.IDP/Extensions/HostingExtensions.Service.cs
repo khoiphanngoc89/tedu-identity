@@ -11,7 +11,7 @@ internal static partial class HostingExtensions
         // uncomment if you want to add a UI
         builder.Services.AddRazorPages();
         builder.Services.ConfigureIdentityServer(builder.Configuration);
-
+        builder.Services.ConfigreCors();
 
         return builder.Build();
     }
