@@ -1,32 +1,78 @@
 ﻿using Duende.IdentityServer.EntityFramework.DbContexts;
+using Duende.IdentityServer.EntityFramework.Mappers;
 using Microsoft.EntityFrameworkCore;
 using System.Net.WebSockets;
+using Tedu.Infrastructure.Persistence;
 
 namespace Tedu.Identity.IDP.Persistence;
 
 public static class IdentitySeed
 {
-    public static IHost MigrationDatabase(this IHost host)
+    public static IHost MigrateDatabase(this IHost host)
     {
         using var scope = host.Services.CreateScope();
         scope.ServiceProvider
-             .GetRequiredService<PersistedGrantDbContext>()
-             .Database
-             .Migrate();
+            .GetRequiredService<PersistedGrantDbContext>()
+            .Database
+            .Migrate();
 
-        using var context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
+        using var context = scope.ServiceProvider
+            .GetRequiredService<ConfigurationDbContext>();
+
+        using var teduContext = scope.ServiceProvider
+           .GetRequiredService<TeduIdentityContext>();
+
         try
         {
+            teduContext.Database.Migrate();
             context.Database.Migrate();
+
             if (!context.Clients.Any())
             {
-                foreach(var client in Config.Clients)
+                foreach (var client in Config.Clients)
                 {
-
+                    context.Clients.Add(client.ToEntity());
                 }
+
+                context.SaveChanges();
+            }
+
+            if (!context.IdentityResources.Any())
+            {
+                foreach (var resource in Config.IdentityResources)
+                {
+                    context.IdentityResources.Add(resource.ToEntity());
+                }
+
+                context.SaveChanges();
+            }
+
+            if (!context.ApiScopes.Any())
+            {
+                foreach (var apiScope in Config.ApiScopes)
+                {
+                    context.ApiScopes.Add(apiScope.ToEntity());
+                }
+
+                context.SaveChanges();
+            }
+
+            if (!context.ApiResources.Any())
+            {
+                foreach (var resource in Config.ApiResources)
+                {
+                    context.ApiResources.Add(resource.ToEntity());
+                }
+
+                context.SaveChanges();
             }
         }
-        catch (Exception ex) { }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
         return host;
     }
 }

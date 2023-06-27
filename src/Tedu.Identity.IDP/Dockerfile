@@ -6,12 +6,12 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["src/Tedu.Identity.IDP/Tedu.Identity.IDP.csproj", "src/Tedu.Identity.IDP/"]
-COPY ["src/Tedu.Domain/Tedu.Domain.csproj", "src/Tedu.Domain/"]
-COPY ["src/Tedu.Infrastructure/Tedu.Infrastructure.csproj", "src/Tedu.Infrastructure/"]
+COPY ["Tedu.Identity.IDP/Tedu.Identity.IDP.csproj", "Tedu.Identity.IDP/"]
+COPY ["Tedu.Domain/Tedu.Domain.csproj", "Tedu.Domain/"]
+COPY ["Tedu.Infrastructure/Tedu.Infrastructure.csproj", "Tedu.Infrastructure/"]
 RUN dotnet restore "src/Tedu.Identity.IDP/Tedu.Identity.IDP.csproj"
 COPY . .
-WORKDIR "/src/src/Tedu.Identity.IDP"
+WORKDIR "/src/Tedu.Identity.IDP"
 RUN dotnet build "Tedu.Identity.IDP.csproj" -c Release -o /app/build
 
 FROM build AS publish

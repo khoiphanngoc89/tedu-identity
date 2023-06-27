@@ -1,6 +1,6 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
-using Tedu.Domain.Const;
+
 
 namespace Tedu.Identity.IDP;
 

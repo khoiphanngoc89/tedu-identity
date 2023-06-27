@@ -10,8 +10,11 @@
   <ItemGroup>
     <PackageReference Include="Duende.IdentityServer" Version="6.3.2" />
     <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="6.3.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
 
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
@@ -22,7 +25,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Tedu.Domain\Tedu.Domain.csproj" />
     <ProjectReference Include="..\Tedu.Infrastructure\Tedu.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

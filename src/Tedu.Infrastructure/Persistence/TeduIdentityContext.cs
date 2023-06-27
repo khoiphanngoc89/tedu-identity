@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Tedu.Contracts.Entities;
+using Tedu.Infrastructure.Extensions;
 
 namespace Tedu.Infrastructure.Persistence;
 
@@ -16,5 +17,6 @@ public class TeduIdentityContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(typeof(TeduIdentityContext).Assembly);
+        builder.ApplyDomainConfiguration();
     }
 }

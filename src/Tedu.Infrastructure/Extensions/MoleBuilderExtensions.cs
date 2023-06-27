@@ -8,7 +8,7 @@ namespace Tedu.Infrastructure.Extensions;
 
 public static class MoleBuilderExtensions
 {
-    public static void ApplyConfiguration(this ModelBuilder builder)
+    public static void ApplyDomainConfiguration(this ModelBuilder builder)
     {
         ConfigureRole(builder.Entity<IdentityRole>());
         ConfigureUser(builder.Entity<User>());

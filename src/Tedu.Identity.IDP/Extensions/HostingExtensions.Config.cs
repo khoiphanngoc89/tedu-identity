@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Tedu.Contracts.Entities;
 using Tedu.Infrastructure.Configurations;
 using Tedu.Infrastructure.Extensions;
+using Tedu.Infrastructure.Persistence;
 
 namespace Tedu.Identity.IDP.Extensions;
 
@@ -29,9 +32,9 @@ internal static partial class HostingExtensions
         return services;
     }
 
-    private static IServiceCollection ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection ConfigureIdentityServer(this IServiceCollection services)
     {
-        var connectionSrting = services.GetAppConnectionString();
+        var connectionString = services.GetAppConnectionString();
         services.AddIdentityServer(options =>
         {
             // https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/api_scopes#authorization-based-on-scopes
@@ -49,14 +52,35 @@ internal static partial class HostingExtensions
             //.AddTestUsers(TestUsers.Users)
             .AddConfigurationStore(opt =>
             {
-                opt.ConfigureDbContext = c => c.UseSqlServer(connectionSrting, builder => builder.MigrationsAssembly("Tedu.Identity.IDP"));
+                opt.ConfigureDbContext = c => c.UseSqlServer(connectionString, builder => builder.MigrationsAssembly("Tedu.Identity.IDP"));
             })
             .AddOperationalStore(opt =>
             {
-                opt.ConfigureDbContext = c => c.UseSqlServer(connectionSrting, builder => builder.MigrationsAssembly("Tedu.Identity.IDP"));
+                opt.ConfigureDbContext = c => c.UseSqlServer(connectionString, builder => builder.MigrationsAssembly("Tedu.Identity.IDP"));
             });
         return services;
     }
+
+    private static void ConfigureIdentity(this IServiceCollection services)
+    {
+        var connectionString = services.GetAppConnectionString();
+        services
+            .AddDbContext<TeduIdentityContext>(options => options
+                .UseSqlServer(connectionString))
+            .AddIdentity<User, IdentityRole>(opt =>
+            {
+                opt.Password.RequireDigit = false;
+                opt.Password.RequiredLength = 6;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireLowercase = false;
+                opt.User.RequireUniqueEmail = true;
+                opt.Lockout.AllowedForNewUsers = true;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                opt.Lockout.MaxFailedAccessAttempts = 3;
+            })
+            .AddEntityFrameworkStores<TeduIdentityContext>()
+            .AddDefaultTokenProviders();
+    }    
 
     private static IServiceCollection ConfigreCors(this IServiceCollection services)
     {
