@@ -101,11 +101,11 @@ public static class Config
                 AllowOfflineAccess = true,
                 RedirectUris = new List<string>()
                 {
-                    "http://localhost:5001/swagger/oauth2-redirect.html",
+                    "http://localhost:5001/signin-oidc",
                 },
                 PostLogoutRedirectUris = new List<string>()
                 {
-                    "http://localhost:5001/swagger/oauth2-redirect.html",
+                    "http://localhost:5001/signout-callback-oidc",
                 },
                 AllowedCorsOrigins = new List<string>()
                 {

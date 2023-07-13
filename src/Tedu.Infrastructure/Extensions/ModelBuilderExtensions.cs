@@ -6,7 +6,7 @@ using Tedu.Contracts.Const;
 
 namespace Tedu.Infrastructure.Extensions;
 
-public static class MoleBuilderExtensions
+public static class ModelBuilderExtensions
 {
     public static void ApplyDomainConfiguration(this ModelBuilder builder)
     {
