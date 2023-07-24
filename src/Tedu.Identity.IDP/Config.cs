@@ -55,7 +55,7 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
-                AccessTokenLifetime = Constants.TeduClients.Swagger.TokenLifeTime
+                AccessTokenLifetime = Constants.TeduClients.Swagger.TokenLifeTime.
             }
 
         };
