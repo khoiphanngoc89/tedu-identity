@@ -1,55 +1,20 @@
 using Serilog;
+using Tedu.Identity.IDP.Utilities;
 
 namespace Tedu.Identity.IDP.Extensions;
 
 internal static partial class HostingExtensions
 {
-    public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
+    internal static ConfigureHostBuilder AddAppConfigurations(this ConfigureHostBuilder host)
     {
-        // uncomment if you want to add a UI
-        builder.Services.AddRazorPages();
-
-        builder.Services.AddIdentityServer(options =>
-            {
-                // https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/api_scopes#authorization-based-on-scopes
-                options.EmitStaticAudienceClaim = true;
-            })
-            .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
-            .AddInMemoryApiResources(Config.ApiResources)
-            .AddTestUsers(TestUsers.Users);
-
-        builder.Services.ConfigureCookiePolicy();
-
-        return builder.Build();
-    }
-
-    public static WebApplication ConfigurePipeline(this WebApplication app)
-    {
-        app.UseSerilogRequestLogging();
-
-        if (app.Environment.IsDevelopment())
+        host.ConfigureAppConfiguration((cxt, conf) =>
         {
-            app.UseDeveloperExceptionPage();
-        }
+            var env = cxt.HostingEnvironment;
+            conf.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+        }).UseSerilog(Serilogger.Configure);
 
-        // uncomment if you want to add a UI
-        app.UseStaticFiles();
-        app.UseRouting();
-
-        // set cookie policy before auth authorization setup
-        app.UseCookiePolicy();
-        app.UseIdentityServer();
-
-        // uncomment if you want to add a UI
-        app.UseAuthorization();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapDefaultControllerRoute().RequireAuthorization();
-            app.MapRazorPages().RequireAuthorization();
-        });
-
-        return app;
+        return host;
     }
 }

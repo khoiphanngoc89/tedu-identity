@@ -281,3 +281,4 @@ src/**/app.yaml
 src/**/inf.yaml
 
 /src/Services/Identity/Identity.API/keys
+/src/Tedu.Identity.IDP/keys/is-signing-key-2A6DF73231F0E1E3BB1DBB8E6CF67058.json
