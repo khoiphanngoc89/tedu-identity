@@ -2,7 +2,7 @@
 
 public static partial class Constants
 {
-    public const string Role = "role";
+    public const string Roles = "roles";
 
     public static class TeduScopes
     {
@@ -25,7 +25,12 @@ public static partial class Constants
             public const string ClientName = "Tedu Microservices Swagger Client";
             public const string ClientId = "tedu_microservices_swagger";
             public const int TokenLifeTime = 60 * 60 * 2;
+        }
 
+        public static class Postman
+        {
+            public const string ClientName = "Tedu Microservices Postman Client";
+            public const string ClientId = "tedu_microservices_postman";
         }
     }
 }

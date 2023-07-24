@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Tedu.Identity.Common.Const;
 
 namespace Tedu.Identity.IDP.Extensions;
 
@@ -15,6 +16,7 @@ internal static partial class HostingExtensions
 
         // uncomment if you want to add a UI
         app.UseStaticFiles();
+        app.UseCors(Constants.CorsPolicy);
         app.UseRouting();
 
         // set cookie policy before auth authorization setup

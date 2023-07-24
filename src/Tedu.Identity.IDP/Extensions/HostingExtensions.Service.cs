@@ -6,12 +6,11 @@ internal static partial class HostingExtensions
     {
         // uncomment if you want to add a UI
         builder.Services.AddRazorPages();
-
-
-
+        
         builder.Services.ConfigureCookiePolicy();
-        builder.Services.ConfigureIdentityServer(builder.Configuration);
+        builder.Services.ConfigureCors();
 
+        builder.Services.ConfigureIdentityServer(builder.Configuration);
         return builder.Build();
     }
 }

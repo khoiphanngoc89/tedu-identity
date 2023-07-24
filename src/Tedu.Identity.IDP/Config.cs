@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 using Tedu.Identity.Common.Const;
 
 namespace Tedu.Identity.IDP;
@@ -13,13 +14,24 @@ public static class Config
             new IdentityResources.Email(),
             new IdentityResource
             {
-                Name = Constants.Role,
+                Name = Constants.Roles,
                 UserClaims = new List<string>
                 {
-                    Constants.Role,
+                    Constants.Roles,
                 }
             },
         };
+
+    public static void ConfigureCors(this IServiceCollection services)
+    {
+        services.AddCors(opt =>
+        {
+            opt.AddPolicy(Constants.CorsPolicy, builder => builder.AllowAnyOrigin()
+                                                                                .AllowAnyMethod()
+                                                                                .AllowAnyHeader());
+            
+        });
+    }    
 
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
@@ -40,7 +52,7 @@ public static class Config
                     },
                     UserClaims = new List<string>()
                     {
-                        Constants.Role
+                        Constants.Roles
                     }
                 },
             };
@@ -55,7 +67,61 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
-                AccessTokenLifetime = Constants.TeduClients.Swagger.TokenLifeTime.
+                AccessTokenLifetime = Constants.TeduClients.Swagger.TokenLifeTime,
+                RedirectUris = new List<string>()
+                {
+                    "http://localhost:5001/swagger/oauth2-redirect.html"
+                },
+                PostLogoutRedirectUris = new List<string>()
+                {
+                    "http://localhost:5001/swagger/oauth2-redirect.html"
+                },
+                AllowedCorsOrigins = new List<string>()
+                {
+                    "http://localhost:5001"
+                },
+                AllowedScopes = new List<string>()
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.StandardScopes.Email,
+                    Constants.Roles,
+                    Constants.TeduScopes.Read,
+                    Constants.TeduScopes.Write
+                }
+            },
+            new()
+            {
+                ClientName = Constants.TeduClients.Postman.ClientName,
+                ClientId = Constants.TeduClients.Postman.ClientId,
+                Enabled = true,
+                ClientUri = null,
+                RequireClientSecret = true,
+                ClientSecrets = new[]
+                {
+                    new Secret("SuperStrongSecret".Sha512())
+                },
+                AllowedGrantTypes = new[]
+                {
+                    GrantType.ClientCredentials,
+                    GrantType.ResourceOwnerPassword
+                },
+                RequireConsent = false,
+                AccessTokenLifetime = Constants.TeduClients.Swagger.TokenLifeTime,
+                AllowOfflineAccess = true,
+                RedirectUris = new List<string>()
+                {
+                    "https://www.getpostman.com/oauth2/callback"
+                },
+                AllowedScopes = new List<string>()
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.StandardScopes.Email,
+                    Constants.Roles,
+                    Constants.TeduScopes.Read,
+                    Constants.TeduScopes.Write
+                }
             }
 
         };
