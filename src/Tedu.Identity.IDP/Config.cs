@@ -109,10 +109,6 @@ public static class Config
                 RequireConsent = false,
                 AccessTokenLifetime = Constants.TeduClients.Swagger.TokenLifeTime,
                 AllowOfflineAccess = true,
-                RedirectUris = new List<string>()
-                {
-                    "https://www.getpostman.com/oauth2/callback"
-                },
                 AllowedScopes = new List<string>()
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
