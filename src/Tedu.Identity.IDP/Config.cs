@@ -14,10 +14,10 @@ public static class Config
             new IdentityResources.Email(),
             new IdentityResource
             {
-                Name = Constants.Roles,
+                Name = SystemConstants.Roles,
                 UserClaims = new List<string>
                 {
-                    Constants.Roles,
+                    SystemConstants.Roles,
                 }
             },
         };
@@ -26,7 +26,7 @@ public static class Config
     {
         services.AddCors(opt =>
         {
-            opt.AddPolicy(Constants.CorsPolicy, builder => builder.AllowAnyOrigin()
+            opt.AddPolicy(SystemConstants.CorsPolicy, builder => builder.AllowAnyOrigin()
                                                                                 .AllowAnyMethod()
                                                                                 .AllowAnyHeader());
             
@@ -36,23 +36,23 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
             {
-                new(Constants.TeduScopes.Read, Constants.TeduScopes.ReadDisplayName),
-                new(Constants.TeduScopes.Write, Constants.TeduScopes.WriteDisplayName),
+                new(SystemConstants.TeduScopes.Read, SystemConstants.TeduScopes.ReadDisplayName),
+                new(SystemConstants.TeduScopes.Write, SystemConstants.TeduScopes.WriteDisplayName),
             };
 
     public static IEnumerable<ApiResource> ApiResources =>
         new ApiResource[]
             {
-                new (Constants.TeduApiResources.Name, Constants.TeduApiResources.DisplayName)
+                new (SystemConstants.TeduApiResources.Name, SystemConstants.TeduApiResources.DisplayName)
                 {
                     Scopes = new List<string>()
                     {
-                        Constants.TeduScopes.Read,
-                        Constants.TeduScopes.Write
+                        SystemConstants.TeduScopes.Read,
+                        SystemConstants.TeduScopes.Write
                     },
                     UserClaims = new List<string>()
                     {
-                        Constants.Roles
+                        SystemConstants.Roles
                     }
                 },
             };
@@ -62,12 +62,12 @@ public static class Config
         {
             new()
             {
-                ClientName = Constants.TeduClients.Swagger.ClientName,
-                ClientId = Constants.TeduClients.Swagger.ClientId,
+                ClientName = SystemConstants.TeduClients.Swagger.ClientName,
+                ClientId = SystemConstants.TeduClients.Swagger.ClientId,
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
-                AccessTokenLifetime = Constants.TeduClients.Swagger.TokenLifeTime,
+                AccessTokenLifetime = SystemConstants.TeduClients.Swagger.TokenLifeTime,
                 RedirectUris = new List<string>()
                 {
                     "http://localhost:5001/swagger/oauth2-redirect.html"
@@ -85,15 +85,15 @@ public static class Config
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
-                    Constants.Roles,
-                    Constants.TeduScopes.Read,
-                    Constants.TeduScopes.Write
+                    SystemConstants.Roles,
+                    SystemConstants.TeduScopes.Read,
+                    SystemConstants.TeduScopes.Write
                 }
             },
             new()
             {
-                ClientName = Constants.TeduClients.Postman.ClientName,
-                ClientId = Constants.TeduClients.Postman.ClientId,
+                ClientName = SystemConstants.TeduClients.Postman.ClientName,
+                ClientId = SystemConstants.TeduClients.Postman.ClientId,
                 Enabled = true,
                 ClientUri = null,
                 RequireClientSecret = true,
@@ -107,16 +107,16 @@ public static class Config
                     GrantType.ResourceOwnerPassword
                 },
                 RequireConsent = false,
-                AccessTokenLifetime = Constants.TeduClients.Swagger.TokenLifeTime,
+                AccessTokenLifetime = SystemConstants.TeduClients.Swagger.TokenLifeTime,
                 AllowOfflineAccess = true,
                 AllowedScopes = new List<string>()
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
-                    Constants.Roles,
-                    Constants.TeduScopes.Read,
-                    Constants.TeduScopes.Write
+                    SystemConstants.Roles,
+                    SystemConstants.TeduScopes.Read,
+                    SystemConstants.TeduScopes.Write
                 }
             }
 
