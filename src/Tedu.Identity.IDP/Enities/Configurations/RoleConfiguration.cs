@@ -9,19 +9,6 @@ public class RoleConfiguration : IEntityTypeConfiguration<IdentityRole>
 {
     public void Configure(EntityTypeBuilder<IdentityRole> builder)
     {
-        builder.ToTable(SystemConstants.Database.TableName.Role, SystemConstants.Database.IdentityScheme)
-            .HasKey(x => x.Id);
-
-        builder.Property(x => x.Id)
-               .IsRequired()
-               .HasColumnType("varchar(50)");
-
-        builder.Property(x => x.Name)
-               .IsRequired()
-               .IsUnicode()
-               .HasColumnType("nvarchar(150)")
-               .HasMaxLength(150);
-
         builder.HasData(new()
         {
             Name = "Adminstrator",

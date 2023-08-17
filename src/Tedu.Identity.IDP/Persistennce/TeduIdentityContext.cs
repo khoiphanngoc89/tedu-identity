@@ -16,6 +16,7 @@ public class TeduIdentityContext : IdentityDbContext<User>
         //builder.ApplyConfiguration(new RoleConfiguration());
         //apply configurations from same assembly
         builder.ApplyConfigurationsFromAssembly(typeof(TeduIdentityContext).Assembly);
+        builder.ApplyIdentityConfiguration();
         base.OnModelCreating(builder);
     }
 }
