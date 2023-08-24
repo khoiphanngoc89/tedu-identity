@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Tedu.Identity.IDP.Enities;
 
-namespace Tedu.Identity.IDP.Persistennce;
+namespace Tedu.Identity.IDP.Persistence;
 
 public class TeduIdentityContext : IdentityDbContext<User>
 {
@@ -17,6 +17,5 @@ public class TeduIdentityContext : IdentityDbContext<User>
         //apply configurations from same assembly
         builder.ApplyConfigurationsFromAssembly(typeof(TeduIdentityContext).Assembly);
         builder.ApplyIdentityConfiguration();
-        base.OnModelCreating(builder);
     }
 }

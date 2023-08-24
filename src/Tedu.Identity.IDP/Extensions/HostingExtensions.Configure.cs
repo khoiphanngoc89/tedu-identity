@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Tedu.Identity.Common.Const;
+using Tedu.Identity.IDP.Enities;
+using Tedu.Identity.IDP.Persistence;
 
 namespace Tedu.Identity.IDP.Extensions;
 
@@ -24,11 +27,6 @@ internal static partial class HostingExtensions
         })
         // not recommend for productions
         .AddDeveloperSigningCredential()
-        //.AddInMemoryIdentityResources(Config.IdentityResources)
-        //.AddInMemoryApiScopes(Config.ApiScopes)
-        //.AddInMemoryClients(Config.Clients)
-        //.AddInMemoryApiResources(Config.ApiResources)
-        //.AddTestUsers(TestUsers.Users)
         .AddConfigurationStore(opt =>
         {
             opt.ConfigureDbContext = c => c.UseSqlServer(connectionString,
@@ -38,6 +36,28 @@ internal static partial class HostingExtensions
         {
             opt.ConfigureDbContext = c => c.UseSqlServer(connectionString,
                 builder => builder.MigrationsAssembly(SystemConstants.AssemblyName));
-        });
+        })
+        .AddAspNetIdentity<User>();
     }
+
+    public static void ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
+    {
+        string connectionString = configuration.GetConnectionString();
+
+        services.AddDbContext<TeduIdentityContext>(options =>
+                    options.UseSqlServer(connectionString))
+                .AddIdentity<User, IdentityRole>(options => 
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.User.RequireUniqueEmail = true;
+                    options.Lockout.AllowedForNewUsers = true;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                })
+                .AddEntityFrameworkStores<TeduIdentityContext>()
+                .AddDefaultTokenProviders();
+    }    
 }

@@ -19,10 +19,15 @@ try
 }
 catch (Exception ex)
 {
-    string type = ex.GetType().Name;
-    if(type.Equals("StopTheHostException", StringComparison.Ordinal))
+    var type = ex.GetType().Name;
+    if(string.Equals(type, "StopTheHostException", StringComparison.Ordinal))
     {
         throw;
+    }
+
+    if (string.Equals(type, "HostAbortedException", StringComparison.Ordinal))
+    {
+        return;
     }
 
     Log.Fatal(ex, $"Unhandles exception: {ex.Message}");

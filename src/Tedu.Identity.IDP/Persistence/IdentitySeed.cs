@@ -2,7 +2,7 @@
 using Duende.IdentityServer.EntityFramework.Mappers;
 using Microsoft.EntityFrameworkCore;
 
-namespace Tedu.Identity.IDP.Persistennce;
+namespace Tedu.Identity.IDP.Persistence;
 
 public static class IdentitySeed
 {

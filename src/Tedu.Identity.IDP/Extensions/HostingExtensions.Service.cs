@@ -10,7 +10,9 @@ internal static partial class HostingExtensions
         builder.Services.ConfigureCookiePolicy();
         builder.Services.ConfigureCors();
 
+        builder.Services.ConfigureIdentity(builder.Configuration);
         builder.Services.ConfigureIdentityServer(builder.Configuration);
+        
         return builder.Build();
     }
 }

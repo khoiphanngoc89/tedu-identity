@@ -43,7 +43,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureUserClaim(EntityTypeBuilder<IdentityUserClaim<string>> entity)
     {
-        entity.ToTable("UserClaim", SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableName.UserClaim, SystemConstants.Database.IdentityScheme)
             .HasKey(x => x.Id);
 
         entity
@@ -54,7 +54,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureUserRole(EntityTypeBuilder<IdentityUserRole<string>> entity)
     {
-        entity.ToTable("UserRole", SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableName.UserRole, SystemConstants.Database.IdentityScheme)
             .HasKey(x => new { x.UserId, x.RoleId });
 
         entity
@@ -69,7 +69,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureRole(EntityTypeBuilder<IdentityRole> entity)
     {
-        entity.ToTable("Role", SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableName.Role, SystemConstants.Database.IdentityScheme)
             .HasKey(x => x.Id);
 
         entity
@@ -87,7 +87,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureUser(EntityTypeBuilder<User> entity)
     {
-        entity.ToTable("User", SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableName.User, SystemConstants.Database.IdentityScheme)
             .HasKey(x => x.Id);
 
         entity
@@ -100,19 +100,16 @@ public static class ModelBuilderExtensions
             .IsRequired()
             .HasColumnType("varchar(255)")
             .HasMaxLength(255)
-            .ValueGeneratedNever()
-            ;
+            .ValueGeneratedNever();
 
         entity.Property(x => x.NormalizedEmail)
             .HasColumnType("varchar(255)")
-            .HasMaxLength(255)
-            ;
+            .HasMaxLength(255);
 
         entity.Property(x => x.UserName)
             .IsRequired()
             .HasColumnType("varchar(255)")
-            .HasMaxLength(255)
-            ;
+            .HasMaxLength(255);
 
         entity.Property(x => x.NormalizedUserName)
             .HasColumnType("varchar(255)")
@@ -127,18 +124,17 @@ public static class ModelBuilderExtensions
         entity.Property(x => x.FirstName)
             .IsRequired()
             .HasColumnType("varchar(50)")
-            .HasMaxLength(50)
-            ;
+            .HasMaxLength(50);
+
         entity.Property(x => x.LastName)
             .IsRequired()
             .HasColumnType("varchar(150)")
-            .HasMaxLength(150)
-            ;
+            .HasMaxLength(150);
     }
 
     private static void ConfigureRoleClaim(EntityTypeBuilder<IdentityRoleClaim<string>> entity)
     {
-        entity.ToTable("RoleClaim", SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableName.RoleClaim, SystemConstants.Database.IdentityScheme)
             .HasKey(x => x.Id);
 
         entity
