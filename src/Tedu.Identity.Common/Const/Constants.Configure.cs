@@ -5,6 +5,14 @@ public static partial class SystemConstants
     public const string Roles = "roles";
     public const string AssemblyName = "Tedu.Identity.IDP";
 
+    public static class Claim
+    {
+        public const string Roles = "roles";
+        public const string UserName = "username";
+        public const string FirstName = "first_name";
+        public const string LastName = "last_name";
+    }
+
     public static class TeduScopes
     {
         public const string Read = "tedu_microservices_api.read";
