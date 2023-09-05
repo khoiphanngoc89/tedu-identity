@@ -5,7 +5,8 @@ public static partial class SystemConstants
     public static class Database
     {
         public const string IdentityScheme = "Identity";
-        public static class TableName
+
+        public static class TableNames
         {
             public const string Role = nameof(Role);
             public const string User = nameof(User);
@@ -13,7 +14,18 @@ public static partial class SystemConstants
             public const string UserRole = nameof(UserRole);
             public const string UserClaim = nameof(UserClaim);
             public const string UserLogin = nameof(UserLogin);
+            public const string UserLogout = nameof(UserLogout);
+            public const string UserToken = nameof(UserToken);
         }
+
+        public static class DataTypes
+        {
+            public const string Varchar50 = "varchar(50)";
+            public const string Varchar255 = "varchar(255)";
+            public const string Varchar20 = "varchar(20)";
+            public const string Varchar150 = "varchar(150)";
+            public const string Nvarchar150 = "nvarchar(150)";
+        }    
 
         public static class Seeds
         {
