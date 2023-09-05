@@ -13,6 +13,16 @@ public static partial class SystemConstants
             public const string UserRole = nameof(UserRole);
             public const string UserClaim = nameof(UserClaim);
             public const string UserLogin = nameof(UserLogin);
+        }
+
+        public static class Seeds
+        {
+            public const string FirstName = "Alice";
+            public const string LastName = "Smith";
+            public const string Address = "Wollongong";
+            public const string Password = "alice123";
+            public const string Email = "alice.smith@example.com";
+            public const string Role = "Adminstrator";
         }    
     }
 }

@@ -1,4 +1,5 @@
-﻿using IdentityModel;
+﻿using Duende.IdentityServer.Extensions;
+using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -30,13 +31,13 @@ public class SeedUser
         using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
         CreateUser(scope, new()
         {
-            FirstName = "Alice",
-            LastName = "Smith",
-            Address = "Wollongong",
+            FirstName = SystemConstants.Database.Seeds.FirstName,
+            LastName = SystemConstants.Database.Seeds.LastName,
+            Address = SystemConstants.Database.Seeds.Address,
             Id = Guid.NewGuid().ToString(),
-            Password = "alice123",
-            Email = "alice.smith@example.com",
-            Role = "Administrator"
+            Password = SystemConstants.Database.Seeds.Password,
+            Email = SystemConstants.Database.Seeds.Email,
+            Role = SystemConstants.Database.Seeds.Role,
         });
     }
 
@@ -44,51 +45,59 @@ public class SeedUser
     {
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
         var user = userManager.FindByNameAsync(userInfo.Email).Result;
-        if (user is not null)
+        IdentityResult result;
+
+        if (user is null)
         {
-            return;
+            user = new()
+            {
+                UserName = userInfo.Email,
+                Email = userInfo.Email,
+                FirstName = userInfo.FirstName,
+                LastName = userInfo.LastName,
+                Address = userInfo.Address,
+                EmailConfirmed = true,
+                Id = Guid.NewGuid().ToString(),
+            };
+
+            result = userManager.CreateAsync(user, userInfo.Password).Result;
+            CheckResult(result);
         }
 
-        user = new()
+        var roles = userManager.GetRolesAsync(user).Result;
+
+        if (roles.IsNullOrEmpty())
         {
-            UserName = userInfo.Email,
-            Email = userInfo.Email,
-            FirstName = userInfo.FirstName,
-            LastName = userInfo.LastName,
-            Address = userInfo.Address,
-            EmailConfirmed = true,
-            Id = Guid.NewGuid().ToString(),
-        };
+            var addRole = userManager.AddToRoleAsync(user, userInfo.Role).Result;
+            CheckResult(addRole);
+        }
 
-        var result = userManager.CreateAsync(user).Result;
-        CheckResult(result);
-
-        var addRole = userManager.AddToRoleAsync(user, userInfo.Role).Result;
-
-        result = userManager.AddClaimsAsync(user, new Claim[]
+        if (user is not null && roles.Any())
         {
-            new(SystemConstants.Claim.UserName, user.UserName),
-            new(SystemConstants.Claim.FirstName, user.FirstName),
-            new(SystemConstants.Claim.LastName, user.LastName),
-            new(SystemConstants.Claim.Roles, userInfo.Role),
-            new(JwtClaimTypes.Address, user.Address),
-            new(JwtClaimTypes.Email, user.Email),
-            new(ClaimTypes.NameIdentifier, user.Id)
-        }).Result;
+            result = userManager.AddClaimsAsync(user, new Claim[]
+            {
+                new(SystemConstants.Claims.UserName, user.UserName),
+                new(SystemConstants.Claims.FirstName, user.FirstName),
+                new(SystemConstants.Claims.LastName, user.LastName),
+                new(SystemConstants.Claims.Roles, userInfo.Role),
+                new(JwtClaimTypes.Address, user.Address),
+                new(JwtClaimTypes.Email, user.Email),
+                new(ClaimTypes.NameIdentifier, user.Id)
+            }).Result;
 
-        CheckResult(result);
-
+            CheckResult(result);
+        }
     }
 
     private static void CheckResult(IdentityResult result)
     {
-        if(result.Succeeded)
+        if (result.Succeeded)
         {
             return;
         }
 
         throw new Exception(result.Errors.First().Description);
-    }    
+    }
 
     internal class UserInfo
     {

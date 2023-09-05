@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Tedu.Identity.Common.Const;
 using Tedu.Identity.IDP.Enities;
 using Tedu.Identity.IDP.Persistence;
+using Tedu.Identity.IDP.Services;
 
 namespace Tedu.Identity.IDP.Extensions;
 
@@ -37,7 +38,8 @@ internal static partial class HostingExtensions
             opt.ConfigureDbContext = c => c.UseSqlServer(connectionString,
                 builder => builder.MigrationsAssembly(SystemConstants.AssemblyName));
         })
-        .AddAspNetIdentity<User>();
+        .AddAspNetIdentity<User>()
+        .AddProfileService<IdentityProfileService>();
     }
 
     public static void ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
