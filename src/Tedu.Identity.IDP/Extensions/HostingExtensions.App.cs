@@ -28,7 +28,7 @@ internal static partial class HostingExtensions
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapDefaultControllerRoute().RequireAuthorization();
-            app.MapRazorPages().RequireAuthorization();
+            endpoints.MapRazorPages().RequireAuthorization();
         });
 
         return app;

@@ -41,6 +41,7 @@ public static partial class SystemConstants
         {
             public const string ClientName = "Tedu Microservices Postman Client";
             public const string ClientId = "tedu_microservices_postman";
+            public const string ClientSecret = "SuperStrongSecret";
         }
     }
 }

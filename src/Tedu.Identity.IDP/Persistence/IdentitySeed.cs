@@ -28,6 +28,26 @@ public static class IdentitySeed
                 context.SaveChanges();
             }
 
+            if (!context.IdentityResources.Any())
+            {
+                foreach (var resource in Config.IdentityResources)
+                {
+                    context.IdentityResources.Add(resource.ToEntity());
+                }
+
+                context.SaveChanges();
+            }
+
+            if (!context.ApiScopes.Any())
+            {
+                foreach (var apiScope in Config.ApiScopes)
+                {
+                    context.ApiScopes.Add(apiScope.ToEntity());
+                }
+
+                context.SaveChanges();
+            }
+
             if (!context.ApiResources.Any())
             {
                 foreach (var resource in Config.ApiResources)

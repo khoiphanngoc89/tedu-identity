@@ -99,7 +99,7 @@ public static class Config
                 RequireClientSecret = true,
                 ClientSecrets = new[]
                 {
-                    new Secret("SuperStrongSecret".Sha512())
+                    new Secret(SystemConstants.TeduClients.Postman.ClientSecret.Sha512())
                 },
                 AllowedGrantTypes = new[]
                 {
@@ -109,6 +109,10 @@ public static class Config
                 RequireConsent = false,
                 AccessTokenLifetime = SystemConstants.TeduClients.Swagger.TokenLifeTime,
                 AllowOfflineAccess = true,
+                RedirectUris = new List<string>()
+                {
+                    "https://wwww.getpostman.com/oauth2/callback"
+                },
                 AllowedScopes = new List<string>()
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
