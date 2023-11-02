@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tedu.Identity.Common.Const;
+using Tedu.Identity.IDP.Common.Settings;
 using Tedu.Identity.IDP.Enities;
 using Tedu.Identity.IDP.Persistence;
 using Tedu.Identity.IDP.Services;
@@ -12,7 +13,17 @@ internal static partial class HostingExtensions
     public static string GetConnectionString(this IConfiguration configuration)
     {
         return configuration.GetConnectionString("IdentitySqlConnection") ?? throw new ArgumentNullException("connectionStrings");
-    }   
+    }
+    
+    internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services, IConfiguration configuration)
+    {
+        var emailSettings = configuration.GetSection(nameof(SmtpEmailSettings))
+            .Get<SmtpEmailSettings>();
+
+        services.AddSingleton(emailSettings);
+
+        return services;
+    }    
     
     public static void ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
     {
