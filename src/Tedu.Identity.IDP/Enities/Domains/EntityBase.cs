@@ -1,4 +1,4 @@
-﻿namespace Tedu.Identity.IDP.Enities;
+﻿namespace Tedu.Identity.IDP.Enities.Domains;
 
 public abstract class EntityBase<TKey> : IEntityBase<TKey>
 {
