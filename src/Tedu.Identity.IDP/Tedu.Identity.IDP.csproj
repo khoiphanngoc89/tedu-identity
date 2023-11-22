@@ -7,8 +7,16 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="keys\**" />
+    <Content Remove="keys\**" />
+    <EmbeddedResource Remove="keys\**" />
+    <None Remove="keys\**" />
+  </ItemGroup>
   
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.15" />
     <PackageReference Include="Duende.IdentityServer" Version="6.3.3" />
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="6.3.3" />
     <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="6.3.3" />

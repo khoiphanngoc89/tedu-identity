@@ -33,7 +33,4 @@ public interface IRepositoryBase<TKey, TEntity>
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
     Task EndTransactionAsync(CancellationToken cancellationToken = default);
     Task RollbackTransactionAsync(CancellationToken cancellationToken = default);
-
-
-
 }

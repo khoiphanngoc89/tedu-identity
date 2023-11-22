@@ -6,6 +6,7 @@ namespace Tedu.Identity.IDP.Persistence;
 
 public class TeduIdentityContext : IdentityDbContext<User>
 {
+    public DbSet<Permission> Permissions { get; set; }
     public TeduIdentityContext(DbContextOptions<TeduIdentityContext> options)
         : base(options)
     {

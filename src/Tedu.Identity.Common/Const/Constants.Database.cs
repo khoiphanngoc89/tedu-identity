@@ -4,8 +4,11 @@ public static partial class SystemConstants
 {
     public static class Database
     {
-        public const string IdentityScheme = "Identity";
-
+        public class Schemes
+        {
+            public const string IdentityScheme = "Identity";
+        }
+        
         public static class TableNames
         {
             public const string Role = nameof(Role);
@@ -16,6 +19,7 @@ public static partial class SystemConstants
             public const string UserLogin = nameof(UserLogin);
             public const string UserLogout = nameof(UserLogout);
             public const string UserToken = nameof(UserToken);
+            public const string Permissions = nameof(Permissions);
         }
 
         public static class DataTypes

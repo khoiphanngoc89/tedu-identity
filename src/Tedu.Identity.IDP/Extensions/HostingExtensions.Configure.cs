@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using Tedu.Identity.Common.Const;
 using Tedu.Identity.IDP.Common.Settings;
 using Tedu.Identity.IDP.Enities;
@@ -19,6 +20,11 @@ internal static partial class HostingExtensions
     {
         var emailSettings = configuration.GetSection(nameof(SmtpEmailSettings))
             .Get<SmtpEmailSettings>();
+
+        if (emailSettings is null)
+        {
+            throw new NoNullAllowedException(nameof(emailSettings));
+        }
 
         services.AddSingleton(emailSettings);
 

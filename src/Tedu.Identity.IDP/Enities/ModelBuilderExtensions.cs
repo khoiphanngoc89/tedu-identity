@@ -21,7 +21,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureUserToken(EntityTypeBuilder<IdentityUserToken<string>> entity)
     {
-        entity.ToTable(SystemConstants.Database.TableNames.UserToken, SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableNames.UserToken, SystemConstants.Database.Schemes.IdentityScheme)
             .HasKey(x => new { x.UserId });
 
         entity
@@ -32,7 +32,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureUserLogin(EntityTypeBuilder<IdentityUserLogin<string>> entity)
     {
-        entity.ToTable(SystemConstants.Database.TableNames.UserLogin, SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableNames.UserLogin, SystemConstants.Database.Schemes.IdentityScheme)
             .HasKey(x => x.UserId);
 
         entity
@@ -43,7 +43,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureUserClaim(EntityTypeBuilder<IdentityUserClaim<string>> entity)
     {
-        entity.ToTable(SystemConstants.Database.TableNames.UserClaim, SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableNames.UserClaim, SystemConstants.Database.Schemes.IdentityScheme)
             .HasKey(x => x.Id);
 
         entity
@@ -54,7 +54,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureUserRole(EntityTypeBuilder<IdentityUserRole<string>> entity)
     {
-        entity.ToTable(SystemConstants.Database.TableNames.UserRole, SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableNames.UserRole, SystemConstants.Database.Schemes.IdentityScheme)
             .HasKey(x => new { x.UserId, x.RoleId });
 
         entity
@@ -69,7 +69,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureRole(EntityTypeBuilder<IdentityRole> entity)
     {
-        entity.ToTable(SystemConstants.Database.TableNames.Role, SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableNames.Role, SystemConstants.Database.Schemes.IdentityScheme)
             .HasKey(x => x.Id);
 
         entity
@@ -87,7 +87,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureUser(EntityTypeBuilder<User> entity)
     {
-        entity.ToTable(SystemConstants.Database.TableNames.User, SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableNames.User, SystemConstants.Database.Schemes.IdentityScheme)
             .HasKey(x => x.Id);
 
         entity
@@ -134,7 +134,7 @@ public static class ModelBuilderExtensions
 
     private static void ConfigureRoleClaim(EntityTypeBuilder<IdentityRoleClaim<string>> entity)
     {
-        entity.ToTable(SystemConstants.Database.TableNames.RoleClaim, SystemConstants.Database.IdentityScheme)
+        entity.ToTable(SystemConstants.Database.TableNames.RoleClaim, SystemConstants.Database.Schemes.IdentityScheme)
             .HasKey(x => x.Id);
 
         entity

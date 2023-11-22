@@ -11,7 +11,7 @@ public class RepositoryBase<TKey, TEntity> : IRepositoryBase<TKey, TEntity>
     private readonly TeduIdentityContext dbContext;
     private readonly IUnitOfWork unitOfWork;
 
-    public RepositoryBase(IUnitOfWork unitOfWork, TeduIdentityContext dbContext)
+    public RepositoryBase(TeduIdentityContext dbContext, IUnitOfWork unitOfWork)
     {
         this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
