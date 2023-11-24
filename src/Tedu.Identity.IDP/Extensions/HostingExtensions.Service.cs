@@ -1,6 +1,10 @@
-﻿using Tedu.Identity.IDP.Enities.Domains;
-using Tedu.Identity.IDP.Repositories;
+﻿using Tedu.Identity.Infrastructure.Domains;
+using Tedu.Identity.Infrastructure.Repositories;
 using Tedu.Identity.IDP.Services;
+using Tedu.Identity.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata;
+using Tedu.Identity.Presentation;
 
 namespace Tedu.Identity.IDP.Extensions;
 
@@ -24,7 +28,13 @@ internal static partial class HostingExtensions
         builder.Services.AddTransient(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>));
         builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
         builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
-        
+
+        builder.Services.AddControllers(config =>
+        {
+            config.RespectBrowserAcceptHeader = true;
+            config.ReturnHttpNotAcceptable = true;
+            config.Filters.Add(new ProducesAttribute("application/json", "text/plain", "text/json"));
+        }).AddApplicationPart(typeof(IAssemblyReference).Assembly);
 
         return builder.Build();
     }

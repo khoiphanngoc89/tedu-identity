@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using Tedu.Identity.Common.Const;
+using Tedu.Identity.Infrastructure.Const;
 using Tedu.Identity.IDP.Common.Settings;
-using Tedu.Identity.IDP.Enities;
-using Tedu.Identity.IDP.Persistence;
+using Tedu.Identity.Infrastructure.Enities;
+using Tedu.Identity.Infrastructure.Persistence;
 using Tedu.Identity.IDP.Services;
 
 namespace Tedu.Identity.IDP.Extensions;
@@ -15,7 +15,7 @@ internal static partial class HostingExtensions
     {
         return configuration.GetConnectionString("IdentitySqlConnection") ?? throw new ArgumentNullException("connectionStrings");
     }
-    
+
     internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services, IConfiguration configuration)
     {
         var emailSettings = configuration.GetSection(nameof(SmtpEmailSettings))
@@ -29,8 +29,8 @@ internal static partial class HostingExtensions
         services.AddSingleton(emailSettings);
 
         return services;
-    }    
-    
+    }
+
     public static void ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
     {
         string connectionString = configuration.GetConnectionString();
@@ -65,7 +65,7 @@ internal static partial class HostingExtensions
 
         services.AddDbContext<TeduIdentityContext>(options =>
                     options.UseSqlServer(connectionString))
-                .AddIdentity<User, IdentityRole>(options => 
+                .AddIdentity<User, IdentityRole>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequiredLength = 6;
@@ -78,5 +78,5 @@ internal static partial class HostingExtensions
                 })
                 .AddEntityFrameworkStores<TeduIdentityContext>()
                 .AddDefaultTokenProviders();
-    }    
+    }
 }

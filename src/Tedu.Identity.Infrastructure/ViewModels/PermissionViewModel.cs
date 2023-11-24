@@ -1,6 +1,6 @@
 ﻿using Tedu.Identity.Infrastructure.Domains;
 
-namespace Tedu.Identity.IDP.ViewModels;
+namespace Tedu.Identity.Infrastructure.ViewModels;
 
 public class PermissionViewModel : EntityBase<long>
 {

@@ -1,5 +1,5 @@
 ﻿using Serilog;
-using Tedu.Identity.Common.Const;
+using Tedu.Identity.Infrastructure.Const;
 
 namespace Tedu.Identity.IDP.Extensions;
 

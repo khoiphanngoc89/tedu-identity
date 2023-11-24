@@ -3,8 +3,9 @@ using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using Tedu.Identity.Common.Const;
-using Tedu.Identity.IDP.Enities;
+using Tedu.Identity.Infrastructure.Const;
+using Tedu.Identity.Infrastructure.Enities;
+using Tedu.Identity.Infrastructure.Persistence;
 
 namespace Tedu.Identity.IDP.Persistence;
 

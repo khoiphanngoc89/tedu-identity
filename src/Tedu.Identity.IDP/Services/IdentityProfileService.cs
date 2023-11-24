@@ -3,8 +3,8 @@ using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using Tedu.Identity.Common.Const;
-using Tedu.Identity.IDP.Enities;
+using Tedu.Identity.Infrastructure.Const;
+using Tedu.Identity.Infrastructure.Enities;
 
 namespace Tedu.Identity.IDP.Services;
 
@@ -49,6 +49,5 @@ public sealed class IdentityProfileService : IProfileService
         var sub = context.Subject.GetSubjectId();
         var user = await _userManager.FindByIdAsync(sub);
         context.IsActive = user is not null;
-
     }
 }

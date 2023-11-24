@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Tedu.Identity.IDP.Enities;
+using Tedu.Identity.Infrastructure.Enities;
 
 namespace Tedu.Identity.IDP.Pages.Logout;
 
@@ -20,7 +20,7 @@ public class Index : PageModel
 
     private readonly SignInManager<User> _signInManager;
 
-    [BindProperty] 
+    [BindProperty]
     public string LogoutId { get; set; }
 
     public Index(IIdentityServerInteractionService interaction, IEventService events, SignInManager<User> signInManager)
@@ -36,7 +36,7 @@ public class Index : PageModel
 
         var showLogoutPrompt = LogoutOptions.ShowLogoutPrompt;
 
-        if (User?.Identity.IsAuthenticated != true)
+        if (User?.Identity?.IsAuthenticated != true)
         {
             // if the user is not authenticated, then just show logged out page
             showLogoutPrompt = false;
@@ -50,7 +50,7 @@ public class Index : PageModel
                 showLogoutPrompt = false;
             }
         }
-            
+
         if (showLogoutPrompt == false)
         {
             // if the request for logout was properly authenticated from IdentityServer, then

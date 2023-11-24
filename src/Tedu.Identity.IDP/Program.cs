@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 try
 {
     builder.Host.AddAppConfigurations();
-    
+
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
@@ -19,13 +19,13 @@ try
     SeedUser.EnsureSeedUser(builder.Configuration.GetConnectionString());
 
     app.MigrateDatabase();
-    
+
     app.Run();
 }
 catch (Exception ex)
 {
     var type = ex.GetType().Name;
-    if(string.Equals(type, "StopTheHostException", StringComparison.Ordinal))
+    if (string.Equals(type, "StopTheHostException", StringComparison.Ordinal))
     {
         throw;
     }

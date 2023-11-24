@@ -1,6 +1,6 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
-using Tedu.Identity.Common.Const;
+using Tedu.Identity.Infrastructure.Const;
 
 namespace Tedu.Identity.IDP;
 
@@ -8,7 +8,7 @@ public static class Config
 {
     public static IEnumerable<IdentityResource> IdentityResources =>
         new IdentityResource[]
-        { 
+        {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
             new IdentityResources.Email(),
@@ -29,9 +29,9 @@ public static class Config
             opt.AddPolicy(SystemConstants.CorsPolicy, builder => builder.AllowAnyOrigin()
                                                                                 .AllowAnyMethod()
                                                                                 .AllowAnyHeader());
-            
+
         });
-    }    
+    }
 
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
@@ -58,7 +58,7 @@ public static class Config
             };
 
     public static IEnumerable<Client> Clients =>
-        new Client[] 
+        new Client[]
         {
             new()
             {
