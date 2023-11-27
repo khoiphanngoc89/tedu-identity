@@ -4,8 +4,9 @@ using System.Data;
 using Tedu.Identity.Infrastructure.Const;
 using Tedu.Identity.IDP.Common.Settings;
 using Tedu.Identity.Infrastructure.Enities;
-using Tedu.Identity.Infrastructure.Persistence;
+using Tedu.Identity.IDP.Persistence;
 using Tedu.Identity.IDP.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace Tedu.Identity.IDP.Extensions;
 
@@ -34,6 +35,10 @@ internal static partial class HostingExtensions
     public static void ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
     {
         string connectionString = configuration.GetConnectionString();
+
+        services.AddDbContext<TeduIdentityContext>(options => options.UseSqlServer(connectionString,
+                        x => x.MigrationsAssembly(typeof(TeduIdentityContext).Assembly.FullName)));
+
         services.AddIdentityServer(options =>
         {
             // https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/api_scopes#authorization-based-on-scopes

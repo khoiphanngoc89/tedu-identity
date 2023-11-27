@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Tedu.Identity.Infrastructure.Enities;
 
-namespace Tedu.Identity.Infrastructure.Persistence;
+namespace Tedu.Identity.IDP.Persistence;
 
 public class TeduIdentityContext : IdentityDbContext<User>
 {
@@ -14,7 +14,6 @@ public class TeduIdentityContext : IdentityDbContext<User>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        //builder.ApplyConfiguration(new RoleConfiguration());
         //apply configurations from same assembly
         builder.ApplyConfigurationsFromAssembly(typeof(TeduIdentityContext).Assembly);
         builder.ApplyIdentityConfiguration();

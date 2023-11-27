@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{35BCC310-37F1-4B75-978E-C16B419F4E8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tedu.Identity.Infrastructure", "src\Tedu.Identity.Infrastructure\Tedu.Identity.Infrastructure.csproj", "{585D9CE2-8977-4BF8-9A24-C22FEE6D3476}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tedu.Identity.Infrastructure", "src\Tedu.Identity.Infrastructure\Tedu.Identity.Infrastructure.csproj", "{585D9CE2-8977-4BF8-9A24-C22FEE6D3476}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tedu.Identity.Presentation", "src\Tedu.Identity.Presentation\Tedu.Identity.Presentation.csproj", "{F8520FD1-A6F2-4B5F-B8B3-CC8BB24AC47D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{585D9CE2-8977-4BF8-9A24-C22FEE6D3476}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{585D9CE2-8977-4BF8-9A24-C22FEE6D3476}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{585D9CE2-8977-4BF8-9A24-C22FEE6D3476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8520FD1-A6F2-4B5F-B8B3-CC8BB24AC47D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8520FD1-A6F2-4B5F-B8B3-CC8BB24AC47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8520FD1-A6F2-4B5F-B8B3-CC8BB24AC47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8520FD1-A6F2-4B5F-B8B3-CC8BB24AC47D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{584046ED-8361-4F73-A479-6B82E25FE57C} = {35BCC310-37F1-4B75-978E-C16B419F4E8E}
 		{585D9CE2-8977-4BF8-9A24-C22FEE6D3476} = {35BCC310-37F1-4B75-978E-C16B419F4E8E}
+		{F8520FD1-A6F2-4B5F-B8B3-CC8BB24AC47D} = {35BCC310-37F1-4B75-978E-C16B419F4E8E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {257631DF-3A82-471C-A14B-C8BE415984A0}

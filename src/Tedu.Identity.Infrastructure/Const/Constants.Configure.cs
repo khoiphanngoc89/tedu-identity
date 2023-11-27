@@ -2,7 +2,7 @@
 
 public static partial class SystemConstants
 {
-    public const string Roles = "roles";
+    public const string GeneralRoles = "roles";
     public const string AssemblyName = "Tedu.Identity.IDP";
 
     public static class Claims

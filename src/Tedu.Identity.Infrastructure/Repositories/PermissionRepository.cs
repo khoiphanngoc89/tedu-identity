@@ -1,6 +1,6 @@
 ﻿using Tedu.Identity.Infrastructure.Enities;
 using Tedu.Identity.Infrastructure.Domains;
-using Tedu.Identity.Infrastructure.Persistence;
+using Tedu.Identity.IDP.Persistence;
 using Tedu.Identity.Infrastructure.ViewModels;
 using Tedu.Identity.Infrastructure.Repositories;
 

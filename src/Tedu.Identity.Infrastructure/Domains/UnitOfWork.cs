@@ -1,4 +1,4 @@
-﻿using Tedu.Identity.Infrastructure.Persistence;
+﻿using Tedu.Identity.IDP.Persistence;
 
 namespace Tedu.Identity.Infrastructure.Domains;
 

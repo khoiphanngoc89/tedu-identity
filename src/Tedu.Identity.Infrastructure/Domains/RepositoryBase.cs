@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
-using Tedu.Identity.Infrastructure.Persistence;
+using Tedu.Identity.IDP.Persistence;
 
 namespace Tedu.Identity.Infrastructure.Domains;
 

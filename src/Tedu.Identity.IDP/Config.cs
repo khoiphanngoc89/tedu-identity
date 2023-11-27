@@ -14,10 +14,10 @@ public static class Config
             new IdentityResources.Email(),
             new IdentityResource
             {
-                Name = SystemConstants.Roles,
+                Name = SystemConstants.GeneralRoles,
                 UserClaims = new List<string>
                 {
-                    SystemConstants.Roles,
+                    SystemConstants.GeneralRoles,
                 }
             },
         };
@@ -52,7 +52,7 @@ public static class Config
                     },
                     UserClaims = new List<string>()
                     {
-                        SystemConstants.Roles
+                        SystemConstants.GeneralRoles
                     }
                 },
             };
@@ -85,7 +85,7 @@ public static class Config
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
-                    SystemConstants.Roles,
+                    SystemConstants.GeneralRoles,
                     SystemConstants.TeduScopes.Read,
                     SystemConstants.TeduScopes.Write
                 }
@@ -118,7 +118,7 @@ public static class Config
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
-                    SystemConstants.Roles,
+                    SystemConstants.GeneralRoles,
                     SystemConstants.TeduScopes.Read,
                     SystemConstants.TeduScopes.Write
                 }

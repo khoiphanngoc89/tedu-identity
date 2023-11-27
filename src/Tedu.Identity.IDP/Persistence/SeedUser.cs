@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Tedu.Identity.Infrastructure.Const;
 using Tedu.Identity.Infrastructure.Enities;
-using Tedu.Identity.Infrastructure.Persistence;
+using Tedu.Identity.IDP.Persistence;
 
 namespace Tedu.Identity.IDP.Persistence;
 
