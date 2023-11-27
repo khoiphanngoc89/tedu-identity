@@ -14,10 +14,10 @@ public static class Config
             new IdentityResources.Email(),
             new IdentityResource
             {
-                Name = SystemConstants.GeneralRoles,
+                Name = SystemConstants.ConfigureOptions.Roles,
                 UserClaims = new List<string>
                 {
-                    SystemConstants.GeneralRoles,
+                    SystemConstants.ConfigureOptions.Roles,
                 }
             },
         };
@@ -26,7 +26,7 @@ public static class Config
     {
         services.AddCors(opt =>
         {
-            opt.AddPolicy(SystemConstants.CorsPolicy, builder => builder.AllowAnyOrigin()
+            opt.AddPolicy(SystemConstants.ConfigureOptions.CorsPolicy, builder => builder.AllowAnyOrigin()
                                                                                 .AllowAnyMethod()
                                                                                 .AllowAnyHeader());
 
@@ -52,7 +52,7 @@ public static class Config
                     },
                     UserClaims = new List<string>()
                     {
-                        SystemConstants.GeneralRoles
+                        SystemConstants.ConfigureOptions.Roles
                     }
                 },
             };
@@ -85,7 +85,7 @@ public static class Config
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
-                    SystemConstants.GeneralRoles,
+                    SystemConstants.ConfigureOptions.Roles,
                     SystemConstants.TeduScopes.Read,
                     SystemConstants.TeduScopes.Write
                 }
@@ -118,11 +118,10 @@ public static class Config
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
-                    SystemConstants.GeneralRoles,
+                    SystemConstants.ConfigureOptions.Roles,
                     SystemConstants.TeduScopes.Read,
                     SystemConstants.TeduScopes.Write
                 }
             }
-
         };
 }

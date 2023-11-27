@@ -32,7 +32,7 @@ internal static partial class HostingExtensions
         return services;
     }
 
-    public static void ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
     {
         string connectionString = configuration.GetConnectionString();
 
@@ -53,18 +53,20 @@ internal static partial class HostingExtensions
         .AddConfigurationStore(opt =>
         {
             opt.ConfigureDbContext = c => c.UseSqlServer(connectionString,
-                builder => builder.MigrationsAssembly(SystemConstants.AssemblyName));
+                builder => builder.MigrationsAssembly(SystemConstants.ConfigureOptions.AssemblyName));
         })
         .AddOperationalStore(opt =>
         {
             opt.ConfigureDbContext = c => c.UseSqlServer(connectionString,
-                builder => builder.MigrationsAssembly(SystemConstants.AssemblyName));
+                builder => builder.MigrationsAssembly(SystemConstants.ConfigureOptions.AssemblyName));
         })
         .AddAspNetIdentity<User>()
         .AddProfileService<IdentityProfileService>();
+
+        return services;
     }
 
-    public static void ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
     {
         string connectionString = configuration.GetConnectionString();
 
@@ -83,5 +85,30 @@ internal static partial class HostingExtensions
                 })
                 .AddEntityFrameworkStores<TeduIdentityContext>()
                 .AddDefaultTokenProviders();
+
+        return services;
+    }
+
+    public static IServiceCollection ConfigureSwagger(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(options =>
+        {
+            options.EnableAnnotations();
+            options.SwaggerDoc(SystemConstants.Swagger.Version1, new()
+            {
+                Title = SystemConstants.Swagger.Title,
+                Version = SystemConstants.Swagger.Version1,
+                Contact = new()
+                {
+                    Name = SystemConstants.Swagger.Name,
+                    Email = SystemConstants.Swagger.Email,
+                    Url = new("https://kietpham.dev")
+                }
+            });
+
+
+        });
+        return services;
     }
 }

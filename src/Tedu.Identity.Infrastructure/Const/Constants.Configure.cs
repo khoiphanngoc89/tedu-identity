@@ -2,8 +2,12 @@
 
 public static partial class SystemConstants
 {
-    public const string GeneralRoles = "roles";
-    public const string AssemblyName = "Tedu.Identity.IDP";
+    public static class ConfigureOptions
+    {
+        public const string Roles = "roles";
+        public const string AssemblyName = "Tedu.Identity.IDP";
+        public const string CorsPolicy = "CorsPolicy";
+    }
 
     public static class Claims
     {

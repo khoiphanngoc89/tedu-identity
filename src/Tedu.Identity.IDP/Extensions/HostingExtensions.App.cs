@@ -16,7 +16,12 @@ internal static partial class HostingExtensions
 
         // uncomment if you want to add a UI
         app.UseStaticFiles();
-        app.UseCors(SystemConstants.CorsPolicy);
+        app.UseCors(SystemConstants.ConfigureOptions.CorsPolicy);
+
+        // swagger
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
         app.UseRouting();
 
         // set cookie policy before auth authorization setup

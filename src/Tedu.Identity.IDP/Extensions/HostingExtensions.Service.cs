@@ -36,6 +36,8 @@ internal static partial class HostingExtensions
             config.Filters.Add(new ProducesAttribute("application/json", "text/plain", "text/json"));
         }).AddApplicationPart(typeof(IAssemblyReference).Assembly);
 
+        builder.Services.ConfigureSwagger(builder.Configuration);
+
         return builder.Build();
     }
 }
