@@ -4,7 +4,7 @@ using System.Data;
 using Tedu.Identity.Infrastructure.Const;
 using Tedu.Identity.IDP.Common.Settings;
 using Tedu.Identity.Infrastructure.Enities;
-using Tedu.Identity.IDP.Persistence;
+using Tedu.Identity.Infrastructure.Persistence;
 using Tedu.Identity.IDP.Services;
 using Microsoft.Extensions.Configuration;
 

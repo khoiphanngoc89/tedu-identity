@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Tedu.Identity.Infrastructure.Enities;
 
-namespace Tedu.Identity.IDP.Persistence;
+namespace Tedu.Identity.Infrastructure.Persistence;
 
 public class TeduIdentityContext : IdentityDbContext<User>
 {
