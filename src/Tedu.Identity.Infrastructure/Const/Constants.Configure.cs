@@ -40,14 +40,14 @@ public static partial class SystemConstants
 
     public static class TeduClients
     {
-        public static class Swagger
+        public static class DefaultClients
         {
             public const string ClientName = "Tedu Microservices Swagger Client";
             public const string ClientId = "tedu_microservices_swagger";
             public const int TokenLifeTime = 60 * 60 * 2;
         }
 
-        public static class Postman
+        public static class PostmanClients
         {
             public const string ClientName = "Tedu Microservices Postman Client";
             public const string ClientId = "tedu_microservices_postman";

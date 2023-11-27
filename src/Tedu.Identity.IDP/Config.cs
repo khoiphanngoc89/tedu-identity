@@ -62,12 +62,12 @@ public static class Config
         {
             new()
             {
-                ClientName = SystemConstants.TeduClients.Swagger.ClientName,
-                ClientId = SystemConstants.TeduClients.Swagger.ClientId,
+                ClientName = SystemConstants.TeduClients.DefaultClients.ClientName,
+                ClientId = SystemConstants.TeduClients.DefaultClients.ClientId,
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
-                AccessTokenLifetime = SystemConstants.TeduClients.Swagger.TokenLifeTime,
+                AccessTokenLifetime = SystemConstants.TeduClients.DefaultClients.TokenLifeTime,
                 RedirectUris = new List<string>()
                 {
                     "http://localhost:5001/swagger/oauth2-redirect.html"
@@ -92,14 +92,14 @@ public static class Config
             },
             new()
             {
-                ClientName = SystemConstants.TeduClients.Postman.ClientName,
-                ClientId = SystemConstants.TeduClients.Postman.ClientId,
+                ClientName = SystemConstants.TeduClients.PostmanClients.ClientName,
+                ClientId = SystemConstants.TeduClients.PostmanClients.ClientId,
                 Enabled = true,
                 ClientUri = null,
                 RequireClientSecret = true,
                 ClientSecrets = new[]
                 {
-                    new Secret(SystemConstants.TeduClients.Postman.ClientSecret.Sha512())
+                    new Secret(SystemConstants.TeduClients.PostmanClients.ClientSecret.Sha512())
                 },
                 AllowedGrantTypes = new[]
                 {
@@ -107,7 +107,7 @@ public static class Config
                     GrantType.ResourceOwnerPassword
                 },
                 RequireConsent = false,
-                AccessTokenLifetime = SystemConstants.TeduClients.Swagger.TokenLifeTime,
+                AccessTokenLifetime = SystemConstants.TeduClients.DefaultClients.TokenLifeTime,
                 AllowOfflineAccess = true,
                 RedirectUris = new List<string>()
                 {
