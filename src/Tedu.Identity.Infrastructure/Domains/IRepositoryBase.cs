@@ -36,38 +36,41 @@ public interface IRepositoryBase<TKey, TEntity>
 
     Task<IReadOnlyList<TModel>> QueryAsync<TModel>(string query,
                                                    object? parameters,
-                                                   CommandType commandType,
-                                                   IDbTransaction? transaction,
-                                                   int? timeout,
+                                                   CommandType commandType = CommandType.StoredProcedure,
+                                                   IDbTransaction? transaction = default,
+                                                   int? timeout = 30,
                                                    CancellationToken cancellationToken = default)
         where TModel: EntityBase<TKey>;
 
     Task<TModel> QueryFirstOrDefaultAsync<TModel>(string query,
                                                   object? parameters,
-                                                  CommandType commandType,
-                                                  IDbTransaction? transaction,
-                                                  int? timeout,
+                                                  CommandType commandType = CommandType.StoredProcedure,
+                                                  IDbTransaction? transaction = default,
+                                                  int? timeout = 30,
                                                   CancellationToken cancellationToken = default)
         where TModel : EntityBase<TKey>;
 
     Task<TModel> QuerySingleOrDefaultAsync<TModel>(string query,
                                                    object? parameters,
-                                                   CommandType commandType,
-                                                   IDbTransaction? transaction,
-                                                   int? timeout,
+                                                   CommandType commandType = CommandType.StoredProcedure,
+                                                   IDbTransaction? transaction = default,
+                                                   int? timeout = 30,
                                                    CancellationToken cancellationToken = default)
         where TModel : EntityBase<TKey>;
 
-    Task<int> ExcuteAsync(string query,
+    Task<int> ExecuteAsync(string query,
                            object? parameters,
-                           CommandType commandType,
-                           IDbTransaction? transaction,
-                           int? timeout,
+                           CommandType commandType = CommandType.StoredProcedure,
+                           IDbTransaction? transaction = default,
+                           int? timeout = 30,
                            CancellationToken cancellationToken = default);
 
     #endregion
+
+    #region Transaction
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
     Task EndTransactionAsync(CancellationToken cancellationToken = default);
     Task RollbackTransactionAsync(CancellationToken cancellationToken = default);
+    #endregion
 }

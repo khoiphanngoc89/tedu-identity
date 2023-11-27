@@ -3,6 +3,9 @@ using Tedu.Identity.Infrastructure.Domains;
 using Tedu.Identity.Infrastructure.Persistence;
 using Tedu.Identity.Infrastructure.ViewModels;
 using Tedu.Identity.Infrastructure.Repositories;
+using Dapper;
+using System.Data;
+using System.Net.Http.Headers;
 
 namespace Tedu.Identity.Infrastructure;
 
@@ -23,9 +26,12 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
         return GetPermissionsByRoleInternalAsync(roleId, cancellationToken);
     }
 
-    private Task<IReadOnlyList<PermissionViewModel>> GetPermissionsByRoleInternalAsync(string roleId, CancellationToken cancellationToken)
+    private async Task<IReadOnlyList<PermissionViewModel>> GetPermissionsByRoleInternalAsync(string roleId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var parameters = new DynamicParameters();
+        parameters.Add("@roleId", roleId);
+        var entity = await QueryAsync<PermissionViewModel>("GetPermissionByRoleId", parameters, cancellationToken: cancellationToken);
+        return entity;
     }
 
     private Task UpdatePermissionsByRoleIdAsync(string roleId, IEnumerable<PermissionAddingViewModel> permissions, bool trackChanges, CancellationToken cancellationToken)
@@ -45,7 +51,7 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
 
     #region Implemetation of IPermissionRepository
 
-    Task<IReadOnlyList<PermissionViewModel>> IPermissionRepository.GetPermissionsByRoleAsync(string roleId, CancellationToken cancellationToken)
+    Task<IReadOnlyList<PermissionViewModel>> IPermissionRepository.GetAllByRoleAsync(string roleId, CancellationToken cancellationToken)
         => this.GetPermissionsByRoleAsync(roleId, cancellationToken);
 
     Task IPermissionRepository.UpdatePermissionsByRoleIdAsync(string roleId, IEnumerable<PermissionAddingViewModel> permissions, bool trackChanges, CancellationToken cancellationToken)

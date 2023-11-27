@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 using System.Linq.Expressions;
+using Tedu.Identity.Infrastructure.Exceptions;
 using Tedu.Identity.Infrastructure.Persistence;
 
 namespace Tedu.Identity.Infrastructure.Domains;
@@ -21,25 +22,25 @@ public class RepositoryBase<TKey, TEntity> : IRepositoryBase<TKey, TEntity>
 
     #region Query
 
-    private IQueryable<TEntity> FindAll(bool trackChanges)
+    public IQueryable<TEntity> FindAll(bool trackChanges = false)
         => !trackChanges ? dbContext.Set<TEntity>().AsNoTracking() :
         dbContext.Set<TEntity>();
 
-    private IQueryable<TEntity> FindAll(bool trackChanges, params Expression<Func<TEntity, object>>[] includeProperties)
+    public IQueryable<TEntity> FindAll(bool trackChanges = false, params Expression<Func<TEntity, object>>[] includeProperties)
     {
         var items = FindAll(trackChanges);
         items = includeProperties.Aggregate(items, (current, includeProperty) => current.Include(includeProperty));
         return items;
     }
 
-    private IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression, bool trackChanges = false)
+    public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression, bool trackChanges = false)
         => !trackChanges
         ? dbContext.Set<TEntity>().Where(expression).AsNoTracking()
         : dbContext.Set<TEntity>().Where(expression);
 
-    private IQueryable<TEntity> FindByCondition(
+    public IQueryable<TEntity> FindByCondition(
         Expression<Func<TEntity, bool>> expression,
-        bool trackChanges,
+        bool trackChanges = false,
         params Expression<Func<TEntity, object>>[] includeProperties)
     {
         var items = FindByCondition(expression, trackChanges);
@@ -47,24 +48,24 @@ public class RepositoryBase<TKey, TEntity> : IRepositoryBase<TKey, TEntity>
         return items;
     }
 
-    private Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken)
+    public Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
         => FindByCondition(x => x.Id!.Equals(id)).FirstOrDefaultAsync(cancellationToken);
 
-    private Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties)
+    public Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includeProperties)
         => FindByCondition(x => x.Id!.Equals(id), trackChanges: false, includeProperties).FirstOrDefaultAsync(cancellationToken);
 
     #endregion Query
 
     #region Action
 
-    private async Task<TKey> CreateAsync(TEntity entity, CancellationToken cancellationToken)
+    public async Task<TKey> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await dbContext.Set<TEntity>().AddAsync(entity);
         await SaveChangesAsync(cancellationToken);
         return entity.Id;
     }
 
-    private async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
+    public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         if (dbContext.Entry(entity).State == EntityState.Unchanged)
         {
@@ -80,25 +81,25 @@ public class RepositoryBase<TKey, TEntity> : IRepositoryBase<TKey, TEntity>
         await SaveChangesAsync(cancellationToken);
     }
 
-    private async Task UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+    public async Task UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         await dbContext.Set<TEntity>().AddRangeAsync(entities);
         await SaveChangesAsync(cancellationToken);
     }
 
-    private async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken)
+    public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken)
     {
         dbContext.Set<TEntity>().Remove(entity);
         await SaveChangesAsync(cancellationToken);
     }
 
-    private async Task DeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+    public async Task DeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         dbContext.Set<TEntity>().RemoveRange(entities);
         await SaveChangesAsync(cancellationToken);
     }
 
-    private async Task DeleteAsync(TKey id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(TKey id, CancellationToken cancellationToken = default)
     {
         var item = await FindByCondition(x => x.Id!.Equals(id)).FirstOrDefaultAsync(cancellationToken);
         if (item is null)
@@ -110,7 +111,7 @@ public class RepositoryBase<TKey, TEntity> : IRepositoryBase<TKey, TEntity>
         await SaveChangesAsync(cancellationToken);
     }
 
-    private async Task DeleteAsync(IEnumerable<TKey> ids, CancellationToken cancellationToken)
+    public async Task DeleteAsync(IEnumerable<TKey> ids, CancellationToken cancellationToken = default)
     {
         var items = await FindByCondition(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
         if (items is null)
@@ -126,110 +127,65 @@ public class RepositoryBase<TKey, TEntity> : IRepositoryBase<TKey, TEntity>
 
     #region Dapper
 
-    private async Task<IReadOnlyList<TModel>> QueryAsync<TModel>(string query, object? parameters, CommandType commandType, IDbTransaction? transaction, int? timeout, CancellationToken cancellationToken) where TModel : EntityBase<TKey>
+    public async Task<IReadOnlyList<TModel>> QueryAsync<TModel>(string query,
+                                                                object? parameters,
+                                                                CommandType commandType = CommandType.StoredProcedure,
+                                                                IDbTransaction? transaction = default,
+                                                                int? timeout = 30,
+                                                                CancellationToken cancellationToken = default)
+        where TModel : EntityBase<TKey>
     {
         var data = await this.dbContext.Connection.QueryAsync<TModel>(new (query, parameters, transaction, timeout, commandType, cancellationToken: cancellationToken));
-        return data.ToList();
+        return data.AsList();
     }
 
-    private async Task <TModel> QueryFirstOrDefaultAsync<TModel>(string query, object? parameters, CommandType commandType, IDbTransaction? transaction, int? timeout, CancellationToken cancellationToken) where TModel : EntityBase<TKey>
+    public async Task <TModel> QueryFirstOrDefaultAsync<TModel>(string query,
+                                                                object? parameters,
+                                                                CommandType commandType = CommandType.StoredProcedure,
+                                                                IDbTransaction? transaction = default,
+                                                                int? timeout = 30,
+                                                                CancellationToken cancellationToken = default)
+        where TModel : EntityBase<TKey>
     {
         var data = await this.dbContext.Connection.QueryFirstOrDefaultAsync<TModel>(new (query, parameters, transaction, timeout, commandType, cancellationToken: cancellationToken));
+        if (data is null)
+        {
+            throw new EntityNotFoundException();
+        }
         return data!;
     }
 
-    private async Task<TModel> QuerySingleOrDefault<TModel>(string query, object? parameters, CommandType commandType, IDbTransaction? transaction, int? timeout, CancellationToken cancellationToken)
-    {
-        var data = await this.dbContext.Connection.QuerySingleAsync<TModel>(new(query, parameters, transaction, timeout, commandType, cancellationToken: cancellationToken));
-        return data!;
-    }
+    public async Task<TModel> QuerySingleOrDefaultAsync<TModel>(string query,
+                                                                object? parameters,
+                                                                CommandType commandType = CommandType.StoredProcedure,
+                                                                IDbTransaction? transaction = default,
+                                                                int? timeout = 30,
+                                                                CancellationToken cancellationToken = default)
+        where TModel : EntityBase<TKey>
+        => await this.dbContext.Connection.QuerySingleAsync<TModel>(new(query, parameters, transaction, timeout, commandType, cancellationToken: cancellationToken));
 
-    private Task<int> ExecuteAsync(string query, object? parameters, CommandType commandType, IDbTransaction? transaction, int? timeout, CancellationToken cancellationToken)
+    public Task<int> ExecuteAsync(string query,
+                                  object? parameters,
+                                  CommandType commandType = CommandType.StoredProcedure,
+                                  IDbTransaction? transaction = default,
+                                  int? timeout = 30,
+                                  CancellationToken cancellationToken = default)
         => this.dbContext.Connection.ExecuteAsync(new(query, parameters, transaction, timeout, commandType, cancellationToken: cancellationToken));
 
     #endregion
 
-    private Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
+    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
         => dbContext.Database.BeginTransactionAsync(cancellationToken);
 
-    private async Task EndTransactionAsync(CancellationToken cancellationToken)
+    public async Task EndTransactionAsync(CancellationToken cancellationToken = default)
     {
         await SaveChangesAsync(cancellationToken);
         await dbContext.Database.CommitTransactionAsync(cancellationToken);
     }
 
-    private Task RollbackTransactionAsync(CancellationToken cancellationToken)
-    => dbContext.Database.RollbackTransactionAsync(cancellationToken);
+    public Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
+        => dbContext.Database.RollbackTransactionAsync(cancellationToken);
 
-    private Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-    => unitOfWork.CommitAsync(cancellationToken);
-
-    #region Implement of interface
-
-    IQueryable<TEntity> IRepositoryBase<TKey, TEntity>.FindAll(bool trackChanges)
-        => FindAll(trackChanges);
-
-    IQueryable<TEntity> IRepositoryBase<TKey, TEntity>.FindAll(bool trackChanges, params Expression<Func<TEntity, object>>[] includeProperties)
-        => FindAll(trackChanges, includeProperties);
-
-    IQueryable<TEntity> IRepositoryBase<TKey, TEntity>.FindByCondition(Expression<Func<TEntity, bool>> expression, bool trackChanges)
-        => FindByCondition(expression, trackChanges);
-
-    IQueryable<TEntity> IRepositoryBase<TKey, TEntity>.FindByCondition(
-        Expression<Func<TEntity, bool>> expression,
-        bool trackChanges,
-        params Expression<Func<TEntity, object>>[] includeProperties)
-        => FindByCondition(expression, trackChanges, includeProperties);
-
-    Task<TEntity?> IRepositoryBase<TKey, TEntity>.GetByIdAsync(TKey id, CancellationToken cancellationToken)
-        => GetByIdAsync(id, cancellationToken);
-
-    Task<TEntity?> IRepositoryBase<TKey, TEntity>.GetByIdAsync(TKey id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties)
-        => GetByIdAsync(id, cancellationToken, includeProperties);
-
-    Task<TKey> IRepositoryBase<TKey, TEntity>.CreateAsync(TEntity entity, CancellationToken cancellationToken)
-        => CreateAsync(entity, cancellationToken);
-
-    Task IRepositoryBase<TKey, TEntity>.UpdateAsync(TEntity entity, CancellationToken cancellationToken)
-        => UpdateAsync(entity, cancellationToken);
-
-    Task IRepositoryBase<TKey, TEntity>.UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
-        => UpdateAsync(entities, cancellationToken);
-
-    Task IRepositoryBase<TKey, TEntity>.DeleteAsync(TEntity entity, CancellationToken cancellationToken)
-        => DeleteAsync(entity, cancellationToken);
-
-    Task IRepositoryBase<TKey, TEntity>.DeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
-        => DeleteAsync(entities, cancellationToken);
-
-    Task IRepositoryBase<TKey, TEntity>.DeleteAsync(TKey id, CancellationToken cancellationToken)
-        => DeleteAsync(id, cancellationToken);
-
-    Task IRepositoryBase<TKey, TEntity>.DeleteAsync(IEnumerable<TKey> ids, CancellationToken cancellationToken)
-        => DeleteAsync(ids, cancellationToken);
-
-    Task<IDbContextTransaction> IRepositoryBase<TKey, TEntity>.BeginTransactionAsync(CancellationToken cancellationToken)
-        => BeginTransactionAsync(cancellationToken);
-
-    Task IRepositoryBase<TKey, TEntity>.EndTransactionAsync(CancellationToken cancellationToken)
-        => EndTransactionAsync(cancellationToken);
-
-    Task IRepositoryBase<TKey, TEntity>.RollbackTransactionAsync(CancellationToken cancellationToken)
-        => RollbackTransactionAsync(cancellationToken);
-
-    Task<int> IRepositoryBase<TKey, TEntity>.SaveChangesAsync(CancellationToken cancellationToken)
-        => SaveChangesAsync(cancellationToken);
-
-    Task<IReadOnlyList<TModel>> IRepositoryBase<TKey, TEntity>.QueryAsync<TModel>(string query, object? parameters, CommandType commandType, IDbTransaction? transaction, int? timeout, CancellationToken cancellationToken)
-        => this.QueryAsync<TModel>(query, parameters, commandType, transaction, timeout, cancellationToken);
-
-    Task<TModel> IRepositoryBase<TKey, TEntity>.QueryFirstOrDefaultAsync<TModel>(string query, object? parameters, CommandType commandType, IDbTransaction? transaction, int? timeout, CancellationToken cancellationToken)
-        => this.QueryFirstOrDefaultAsync<TModel>(query, parameters, commandType, transaction, timeout, cancellationToken);
-    Task<TModel> IRepositoryBase<TKey, TEntity>.QuerySingleOrDefaultAsync<TModel>(string query, object? parameters, CommandType commandType, IDbTransaction? transaction, int? timeout, CancellationToken cancellationToken)
-        => this.QuerySingleOrDefault<TModel>(query, parameters, commandType, transaction, timeout, cancellationToken);
-
-    Task<int> IRepositoryBase<TKey, TEntity>.ExcuteAsync(string query, object? parameters, CommandType commandType, IDbTransaction? transaction, int? timeout, CancellationToken cancellationToken)
-        => this.ExecuteAsync(query, parameters, commandType, transaction, timeout, cancellationToken);
-
-    #endregion Implement of interface
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        => unitOfWork.CommitAsync(cancellationToken);
 }
