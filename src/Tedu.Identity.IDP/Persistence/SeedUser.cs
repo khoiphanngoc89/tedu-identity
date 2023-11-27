@@ -62,7 +62,7 @@ public class SeedUser
             };
 
             result = userManager.CreateAsync(user, userInfo.Password).Result;
-            CheckResult(result);
+            Preconditions(result);
         }
 
         var roles = userManager.GetRolesAsync(user).Result;
@@ -70,44 +70,41 @@ public class SeedUser
         if (roles.IsNullOrEmpty())
         {
             var addRole = userManager.AddToRoleAsync(user, userInfo.Role).Result;
-            CheckResult(addRole);
+            Preconditions(addRole);
         }
 
-        if (user is not null && roles.Any())
+        result = userManager.AddClaimsAsync(user, new Claim[]
         {
-            result = userManager.AddClaimsAsync(user, new Claim[]
-            {
-                new(SystemConstants.Claims.UserName, user.UserName),
+                new(SystemConstants.Claims.UserName, user.UserName!),
                 new(SystemConstants.Claims.FirstName, user.FirstName),
                 new(SystemConstants.Claims.LastName, user.LastName),
                 new(SystemConstants.Claims.Roles, userInfo.Role),
                 new(JwtClaimTypes.Address, user.Address),
-                new(JwtClaimTypes.Email, user.Email),
+                new(JwtClaimTypes.Email, user.Email!),
                 new(ClaimTypes.NameIdentifier, user.Id)
-            }).Result;
+        }).Result;
 
-            CheckResult(result);
-        }
+        Preconditions(result);
     }
 
-    private static void CheckResult(IdentityResult result)
+    private static void Preconditions(IdentityResult result)
     {
         if (result.Succeeded)
         {
             return;
         }
 
-        throw new Exception(result.Errors.First().Description);
+        throw new InvalidDataException(result.Errors.First().Description);
     }
 
     internal class UserInfo
     {
-        public string Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Address { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty;
     }
 }
