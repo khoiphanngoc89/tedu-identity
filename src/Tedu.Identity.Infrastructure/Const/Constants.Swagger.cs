@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tedu.Identity.Infrastructure.Const;
+﻿namespace Tedu.Identity.Infrastructure.Const;
 
 public static partial class SystemConstants
 {
