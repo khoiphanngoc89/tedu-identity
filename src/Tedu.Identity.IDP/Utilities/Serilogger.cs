@@ -13,7 +13,7 @@ public static class Serilogger
         var username = context.Configuration.GetValue<string>("ElasticConfiguration:Username");
         var password = context.Configuration.GetValue<string>("ElasticConfiguration:Password");
 
-        if (elasticUri is null || username is null || password is null)
+        if (appName is null || elasticUri is null || username is null || password is null)
         {
             throw new InvalidOperationException("Elastic is not configured");
         }
