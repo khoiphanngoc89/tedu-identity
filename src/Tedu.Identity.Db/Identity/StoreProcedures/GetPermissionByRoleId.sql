@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[GetPermissionByRoleId]
-	@roleId int
+	@roleId VARCHAR(50)
 AS
 BEGIN
 	SELECT *
