@@ -76,7 +76,6 @@
     <Build Include="Identity\Tables\UserLogin.sql" />
     <Build Include="Identity\Tables\UserRole.sql" />
     <Build Include="Identity\Tables\UserToken.sql" />
-    <Build Include="Identity\Tables\Permissions.sql" />
     <Build Include="dbo\Tables\__EFMigrationsHistory.sql" />
     <Build Include="dbo\Tables\DeviceCodes.sql" />
     <Build Include="dbo\Tables\Keys.sql" />
@@ -103,6 +102,8 @@
     <Build Include="dbo\Tables\ClientScopes.sql" />
     <Build Include="Security\Identity.sql" />
     <Build Include="Identity\StoreProcedures\GetPermissionByRoleId.sql" />
+    <Build Include="Identity\StoreProcedures\CreatePermission.sql" />
+    <Build Include="Identity\Tables\Permissions.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tedu.Identity.Db.publish.xml" />

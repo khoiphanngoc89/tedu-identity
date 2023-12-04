@@ -3,14 +3,8 @@
     [Function] VARCHAR (50) NOT NULL,
     [Command]  VARCHAR (50) NOT NULL,
     [RoleId]   VARCHAR (50) NOT NULL,
-    CONSTRAINT [PK_Permissions] PRIMARY KEY CLUSTERED ([Id] ASC, [Command] ASC, [Function] ASC),
-    CONSTRAINT [FK_Permissions_Role_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Identity].[Role] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [PK_Permissions] PRIMARY KEY CLUSTERED ([Id] ASC, [Command] ASC, [Function] ASC)
 );
-
-
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_Permissions_RoleId]
-    ON [Identity].[Permissions]([RoleId] ASC);
 
 
 GO

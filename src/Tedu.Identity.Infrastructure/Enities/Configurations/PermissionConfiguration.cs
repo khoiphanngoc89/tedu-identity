@@ -28,9 +28,5 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
             .HasColumnType(SystemConstants.Database.DataTypes.Varchar50)
             .HasMaxLength(50)
             .IsRequired();
-
-        builder.HasOne(x => x.Role)
-            .WithOne()
-            .HasForeignKey<Permission>(x => x.RoleId);
     }
 }

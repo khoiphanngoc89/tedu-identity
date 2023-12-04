@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Reflection.Emit;
 using Tedu.Identity.Infrastructure.Enities;
 
 namespace Tedu.Identity.Infrastructure.Persistence;
