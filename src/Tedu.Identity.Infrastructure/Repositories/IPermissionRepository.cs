@@ -6,7 +6,8 @@ namespace Tedu.Identity.Infrastructure.Repositories;
 
 public interface IPermissionRepository : IRepositoryBase<long, Permission>
 {
-    Task<IReadOnlyList<PermissionViewModel>> GetAllByRoleAsync(string roleId, CancellationToken cancellationToken = default);
-    Task<PermissionViewModel?> CreatePermissionAsync(string roleId, PermissionAddingViewModel model, CancellationToken cancellationToken = default);
-    Task UpdatePermissionsByRoleIdAsync(string roleId, IEnumerable<PermissionAddingViewModel> permissions, bool trackChanges, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<PermissionResponse>> GetAllByRoleAsync(string roleId, CancellationToken cancellationToken = default);
+    Task<PermissionResponse?> CreatePermissionAsync(string roleId, PermissionAddingRequest model, CancellationToken cancellationToken = default);
+    Task DeletePermissionAsync(string roleId, string function, string command, CancellationToken cancellationToken = default);
+    Task UpdatePermissionsByRoleIdAsync(string roleId, IEnumerable<PermissionAddingRequest> permissions, CancellationToken cancellationToken = default);
 }

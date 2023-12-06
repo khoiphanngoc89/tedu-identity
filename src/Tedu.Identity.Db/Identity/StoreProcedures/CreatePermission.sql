@@ -2,7 +2,7 @@
 	@roleId VARCHAR(50)
   , @function VARCHAR(50)
   , @command VARCHAR(50)
-  , @insertedId BIGINT OUTPUT
+  , @id BIGINT OUTPUT
 AS
 BEGIN
 	SET XACT_ABORT ON;
@@ -18,7 +18,7 @@ BEGIN
 		INSERT INTO [Identity].[Permissions]([Function], [Command], [RoleId])
 		VALUES (@function, @command, @roleId)
 
-		SET @insertedId =  SCOPE_IDENTITY();
+		SET @id =  SCOPE_IDENTITY();
 	END
 	COMMIT
 

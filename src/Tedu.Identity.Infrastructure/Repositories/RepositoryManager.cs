@@ -14,7 +14,7 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<IPermissionRepository> permissionRepository;
     public UserManager<User> UserManager { get; }
     public RoleManager<IdentityRole> RoleManager { get; }
-    public IPermissionRepository PermissionRepository => this.permissionRepository.Value;
+    public IPermissionRepository Permission => this.permissionRepository.Value;
 
     public RepositoryManager(
         TeduIdentityContext dbContext,

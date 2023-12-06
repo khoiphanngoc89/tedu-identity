@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tedu.Identity.Infrastructure.Helpers;
+﻿namespace Tedu.Identity.Infrastructure.Helpers;
 
 public static class DynamicHelpers
 {

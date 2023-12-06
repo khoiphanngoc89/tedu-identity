@@ -2,7 +2,7 @@
 
 namespace Tedu.Identity.Infrastructure.ViewModels;
 
-public class PermissionViewModel : EntityBase<long>
+public class PermissionResponse : EntityBase<long>
 {
     public string? RoleId { get; set; }
     public string? Function { get; set; }

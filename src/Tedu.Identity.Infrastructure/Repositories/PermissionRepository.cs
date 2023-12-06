@@ -16,61 +16,60 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
     {
     }
 
-    private Task<IReadOnlyList<PermissionViewModel>> GetPermissionsByRoleAsync(string roleId, CancellationToken cancellationToken)
+    private Task<IReadOnlyList<PermissionResponse>> GetPermissionsByRoleAsync(string roleId, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(roleId))
-        {
-            throw new ArgumentNullException(nameof(roleId));
-        }
-
+        ArgumentNullException.ThrowIfNull(nameof(roleId));
         return GetPermissionsByRoleInternalAsync(roleId, cancellationToken);
     }
 
-    private async Task<IReadOnlyList<PermissionViewModel>> GetPermissionsByRoleInternalAsync(string roleId, CancellationToken cancellationToken)
+    private async Task<IReadOnlyList<PermissionResponse>> GetPermissionsByRoleInternalAsync(string roleId, CancellationToken cancellationToken)
     {
         var parameters = new DynamicParameters();
         parameters.Add("@roleId", roleId);
-        var entity = await QueryAsync<PermissionViewModel>("GetPermissionByRoleId", parameters, cancellationToken: cancellationToken);
+        var entity = await QueryAsync<PermissionResponse>("GetPermissionByRoleId", parameters, cancellationToken: cancellationToken);
         return entity;
     }
 
-    private Task UpdatePermissionsByRoleIdAsync(string roleId, IEnumerable<PermissionAddingViewModel> permissions, bool trackChanges, CancellationToken cancellationToken)
+    private Task UpdatePermissionsByRoleIdAsync(string roleId, IEnumerable<PermissionAddingRequest> permissions, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(roleId))
-        {
-            throw new ArgumentNullException(nameof(roleId));
-        }
+        ArgumentNullException.ThrowIfNull(roleId);
 
-        return this.UpdatePermissionsByRoleIdInternalAsync(roleId, permissions, trackChanges, cancellationToken);
+        return this.HandleUpdatePermissionsByRoleIdAsync(roleId, permissions, cancellationToken);
     }
 
-    private Task UpdatePermissionsByRoleIdInternalAsync(string roleId, IEnumerable<PermissionAddingViewModel> permissions, bool trackChanges, CancellationToken cancellationToken)
+    private Task HandleUpdatePermissionsByRoleIdAsync(string roleId, IEnumerable<PermissionAddingRequest> permissions, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
+        var dt = new DataTable();
+        dt.Columns.Add("RoleId", typeof(string));
+        dt.Columns.Add("Function", typeof(string));
+        dt.Columns.Add("Command", typeof(string));
 
-    private Task<PermissionViewModel?> CreatePermissionAsync(string roleId, PermissionAddingViewModel model, CancellationToken cancellationToken)
-    {
-        if (string.IsNullOrWhiteSpace(roleId))
+        foreach (var permission in permissions)
         {
-            throw new ArgumentNullException(nameof(roleId));
+            dt.Rows.Add(roleId, permission.Function, permission.Command);
         }
 
-        if (model is null)
-        {
-            throw new ArgumentNullException(nameof(model));
-        }
-
-        return this.CreatePermissionInternalAsync(roleId, model, cancellationToken);
+        var parameters = new DynamicParameters();
+        parameters.Add("@roleId", roleId, DbType.String);
+        parameters.Add("@permissions", dt.AsTableValuedParameter("dbo.Permissions"));
+        return this.ExecuteAsync("UpdatePermissionByRole", parameters, cancellationToken: cancellationToken);
     }
 
-    private async Task<PermissionViewModel?> CreatePermissionInternalAsync(string roleId, PermissionAddingViewModel model, CancellationToken cancellationToken)
+    private Task<PermissionResponse?> CreatePermissionAsync(string roleId, PermissionAddingRequest model, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(roleId);
+        ArgumentNullException.ThrowIfNull(model);
+
+        return this.HandleCreatePermissionAsync(roleId, model, cancellationToken);
+    }
+
+    private async Task<PermissionResponse?> HandleCreatePermissionAsync(string roleId, PermissionAddingRequest model, CancellationToken cancellationToken)
     {
         var parameters = new DynamicParameters();
         parameters.Add("@roleId", roleId, DbType.String);
         parameters.Add("@function", model.Function, DbType.String);
         parameters.Add("@command", model.Command, DbType.String);
-        parameters.Add("@insertedId", DbType.Int64, direction: ParameterDirection.Output);
+        parameters.Add("@id", DbType.Int64, direction: ParameterDirection.Output);
 
         var result = await this.ExecuteAsync("CreatePermission", parameters, cancellationToken: cancellationToken);
         if (result <= 0)
@@ -78,7 +77,7 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
             return default;
         }
 
-        var id = parameters.Get<dynamic>("@insertedId");
+        var id = parameters.Get<dynamic>("@id");
         return new()
         {
             Id = DynamicHelpers.Convert<long>(id),
@@ -88,16 +87,36 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
         };
     }
 
+    private Task DeletePermissionAsync(string roleId, string function, string command, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(roleId);
+        ArgumentNullException.ThrowIfNull(function);
+        ArgumentNullException.ThrowIfNull(command);
+        return this.HandleDeletePermissionAsync(roleId, function, command, cancellationToken);
+    }
+
+    private async Task HandleDeletePermissionAsync(string roleId, string function, string command, CancellationToken cancellationToken)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("@roleId", roleId, DbType.String);
+        parameters.Add("@function", function, DbType.String);
+        parameters.Add("@command", command, DbType.String);
+        await this.ExecuteAsync("DeletePermission", parameters, cancellationToken: cancellationToken);
+    }
+
     #region Implemetation of IPermissionRepository
 
-    Task<IReadOnlyList<PermissionViewModel>> IPermissionRepository.GetAllByRoleAsync(string roleId, CancellationToken cancellationToken)
+    Task<IReadOnlyList<PermissionResponse>> IPermissionRepository.GetAllByRoleAsync(string roleId, CancellationToken cancellationToken)
         => this.GetPermissionsByRoleAsync(roleId, cancellationToken);
 
-    Task IPermissionRepository.UpdatePermissionsByRoleIdAsync(string roleId, IEnumerable<PermissionAddingViewModel> permissions, bool trackChanges, CancellationToken cancellationToken)
-        => this.UpdatePermissionsByRoleIdAsync(roleId, permissions, trackChanges, cancellationToken);
+    Task IPermissionRepository.UpdatePermissionsByRoleIdAsync(string roleId, IEnumerable<PermissionAddingRequest> permissions, CancellationToken cancellationToken)
+        => this.UpdatePermissionsByRoleIdAsync(roleId, permissions, cancellationToken);
 
-    Task<PermissionViewModel?> IPermissionRepository.CreatePermissionAsync(string roleId, PermissionAddingViewModel model, CancellationToken cancellationToken)
+    Task<PermissionResponse?> IPermissionRepository.CreatePermissionAsync(string roleId, PermissionAddingRequest model, CancellationToken cancellationToken)
         => this.CreatePermissionAsync(roleId, model, cancellationToken);
+
+    Task IPermissionRepository.DeletePermissionAsync(string roleId, string function, string command, System.Threading.CancellationToken cancellationToken)
+        => this.DeletePermissionAsync(roleId, function, command, cancellationToken);
 
     #endregion
 }

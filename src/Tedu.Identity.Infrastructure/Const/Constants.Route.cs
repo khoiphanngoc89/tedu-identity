@@ -11,6 +11,6 @@ public static partial class SystemConstants
     public static class Routes
     {
         public const string DefaultApi = "/api/[controller]";
-        public const string PermissionApi = "/api/roles/{roleId}/[controller]";
+        public const string PermissionApi = "/api/[controller]/roles/{roleId}";
     }
 }

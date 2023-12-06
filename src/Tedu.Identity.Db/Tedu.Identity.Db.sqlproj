@@ -104,6 +104,8 @@
     <Build Include="Identity\StoreProcedures\GetPermissionByRoleId.sql" />
     <Build Include="Identity\StoreProcedures\CreatePermission.sql" />
     <Build Include="Identity\Tables\Permissions.sql" />
+    <Build Include="Identity\StoreProcedures\DeletePermission.sql" />
+    <Build Include="Identity\StoreProcedures\UpdatePermissionByRole.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tedu.Identity.Db.publish.xml" />

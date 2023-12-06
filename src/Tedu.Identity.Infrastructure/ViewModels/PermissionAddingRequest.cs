@@ -2,7 +2,7 @@
 
 namespace Tedu.Identity.Infrastructure.ViewModels;
 
-public class PermissionAddingViewModel
+public class PermissionAddingRequest
 {
     [Required]
     public string? Function { get; set; }

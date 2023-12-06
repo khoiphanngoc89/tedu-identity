@@ -9,7 +9,7 @@ public interface IRepositoryManager
 {
     UserManager<User> UserManager { get; }
     RoleManager<IdentityRole> RoleManager { get; }
-    IPermissionRepository PermissionRepository { get; }
+    IPermissionRepository Permission { get; }
     Task<int> SaveAsync(CancellationToken cancellationToken = default);
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
     Task EndTransactionAsync(CancellationToken cancellationToken = default);
