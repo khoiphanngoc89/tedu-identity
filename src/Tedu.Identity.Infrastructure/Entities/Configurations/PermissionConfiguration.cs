@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tedu.Identity.Infrastructure.Const;
 
-namespace Tedu.Identity.Infrastructure.Enities.Configurations;
+namespace Tedu.Identity.Infrastructure.Entities.Configurations;
 
 public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
 {

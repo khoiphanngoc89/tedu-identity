@@ -36,19 +36,19 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
             {
-                new(SystemConstants.TeduScopes.Read, SystemConstants.TeduScopes.ReadDisplayName),
-                new(SystemConstants.TeduScopes.Write, SystemConstants.TeduScopes.WriteDisplayName),
+                new(SystemConstants.ConfigureOptions.Read, SystemConstants.ConfigureOptions.ReadDisplayName),
+                new(SystemConstants.ConfigureOptions.Write, SystemConstants.ConfigureOptions.WriteDisplayName),
             };
 
     public static IEnumerable<ApiResource> ApiResources =>
         new ApiResource[]
             {
-                new (SystemConstants.TeduApiResources.Name, SystemConstants.TeduApiResources.DisplayName)
+                new (SystemConstants.ConfigureOptions.Name, SystemConstants.ConfigureOptions.DisplayName)
                 {
                     Scopes = new List<string>()
                     {
-                        SystemConstants.TeduScopes.Read,
-                        SystemConstants.TeduScopes.Write
+                        SystemConstants.ConfigureOptions.Read,
+                        SystemConstants.ConfigureOptions.Write
                     },
                     UserClaims = new List<string>()
                     {
@@ -62,12 +62,12 @@ public static class Config
         {
             new()
             {
-                ClientName = SystemConstants.TeduClients.DefaultClients.ClientName,
-                ClientId = SystemConstants.TeduClients.DefaultClients.ClientId,
+                ClientName = SystemConstants.TeduClients.ClientName,
+                ClientId = SystemConstants.TeduClients.ClientId,
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
-                AccessTokenLifetime = SystemConstants.TeduClients.DefaultClients.TokenLifeTime,
+                AccessTokenLifetime = SystemConstants.TeduClients.TokenLifeTime,
                 RedirectUris = new List<string>()
                 {
                     "http://localhost:5001/swagger/oauth2-redirect.html"
@@ -86,20 +86,20 @@ public static class Config
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
                     SystemConstants.ConfigureOptions.Roles,
-                    SystemConstants.TeduScopes.Read,
-                    SystemConstants.TeduScopes.Write
+                    SystemConstants.ConfigureOptions.Read,
+                    SystemConstants.ConfigureOptions.Write
                 }
             },
             new()
             {
-                ClientName = SystemConstants.TeduClients.PostmanClients.ClientName,
-                ClientId = SystemConstants.TeduClients.PostmanClients.ClientId,
+                ClientName = SystemConstants.PostmanClients.ClientName,
+                ClientId = SystemConstants.PostmanClients.ClientId,
                 Enabled = true,
                 ClientUri = null,
                 RequireClientSecret = true,
                 ClientSecrets = new[]
                 {
-                    new Secret(SystemConstants.TeduClients.PostmanClients.ClientSecret.Sha512())
+                    new Secret(SystemConstants.PostmanClients.ClientSecret.Sha512())
                 },
                 AllowedGrantTypes = new[]
                 {
@@ -107,7 +107,7 @@ public static class Config
                     GrantType.ResourceOwnerPassword
                 },
                 RequireConsent = false,
-                AccessTokenLifetime = SystemConstants.TeduClients.DefaultClients.TokenLifeTime,
+                AccessTokenLifetime = SystemConstants.TeduClients.TokenLifeTime,
                 AllowOfflineAccess = true,
                 RedirectUris = new List<string>()
                 {
@@ -119,8 +119,8 @@ public static class Config
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
                     SystemConstants.ConfigureOptions.Roles,
-                    SystemConstants.TeduScopes.Read,
-                    SystemConstants.TeduScopes.Write
+                    SystemConstants.ConfigureOptions.Read,
+                    SystemConstants.ConfigureOptions.Write
                 }
             }
         };

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tedu.Identity.Infrastructure.Const;
 
 
-namespace Tedu.Identity.Infrastructure.Enities;
+namespace Tedu.Identity.Infrastructure.Entities;
 
 public static class ModelBuilderExtensions
 {

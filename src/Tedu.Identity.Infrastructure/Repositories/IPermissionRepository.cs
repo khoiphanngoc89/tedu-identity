@@ -1,4 +1,4 @@
-﻿using Tedu.Identity.Infrastructure.Enities;
+﻿using Tedu.Identity.Infrastructure.Entities;
 using Tedu.Identity.Infrastructure.Domains;
 using Tedu.Identity.Infrastructure.ViewModels;
 

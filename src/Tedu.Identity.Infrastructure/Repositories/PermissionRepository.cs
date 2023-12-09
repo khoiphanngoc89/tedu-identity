@@ -1,4 +1,4 @@
-﻿using Tedu.Identity.Infrastructure.Enities;
+﻿using Tedu.Identity.Infrastructure.Entities;
 using Tedu.Identity.Infrastructure.Domains;
 using Tedu.Identity.Infrastructure.Persistence;
 using Tedu.Identity.Infrastructure.ViewModels;
@@ -26,7 +26,7 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
     {
         var parameters = new DynamicParameters();
         parameters.Add("@roleId", roleId);
-        var entity = await QueryAsync<PermissionResponse>("GetPermissionByRoleId", parameters, cancellationToken: cancellationToken);
+        var entity = await this.QueryAsync<PermissionResponse>("GetPermissionByRoleId", parameters, cancellationToken: cancellationToken);
         return entity;
     }
 

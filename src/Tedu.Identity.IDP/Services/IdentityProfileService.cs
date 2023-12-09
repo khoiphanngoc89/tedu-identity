@@ -4,7 +4,7 @@ using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Tedu.Identity.Infrastructure.Const;
-using Tedu.Identity.Infrastructure.Enities;
+using Tedu.Identity.Infrastructure.Entities;
 
 namespace Tedu.Identity.IDP.Services;
 
@@ -32,15 +32,15 @@ public sealed class IdentityProfileService : IProfileService
         var claims = principal.Claims.ToList();
         var roles = await _userManager.GetRolesAsync(user);
 
-        claims.Add(new(SystemConstants.Claims.FirstName, user.FirstName));
-        claims.Add(new(SystemConstants.Claims.LastName, user.LastName));
-        claims.Add(new(SystemConstants.Claims.UserName, user.UserName));
-        claims.Add(new(SystemConstants.Claims.UserId, user.Id));
+        claims.Add(new(SystemConstants.ConfigureOptions.FirstName, user.FirstName));
+        claims.Add(new(SystemConstants.ConfigureOptions.LastName, user.LastName));
+        claims.Add(new(SystemConstants.ConfigureOptions.UserName, user.UserName!));
+        claims.Add(new(SystemConstants.ConfigureOptions.UserId, user.Id));
         claims.Add(new(ClaimTypes.Name, user.UserName));
-        claims.Add(new(ClaimTypes.Email, user.Email));
+        claims.Add(new(ClaimTypes.Email, user.Email!));
         claims.Add(new(ClaimTypes.NameIdentifier, user.Id));
-        claims.Add(new(SystemConstants.Claims.FirstName, user.FirstName));
-        claims.Add(new(SystemConstants.Claims.Roles, string.Join(";", roles)));
+        claims.Add(new(SystemConstants.ConfigureOptions.FirstName, user.FirstName));
+        claims.Add(new(SystemConstants.ConfigureOptions.Roles, string.Join(";", roles)));
         context.IssuedClaims = claims;
     }
 

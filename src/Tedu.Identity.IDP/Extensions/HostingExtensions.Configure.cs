@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Tedu.Identity.Infrastructure.Const;
 using Tedu.Identity.Infrastructure.Settings;
-using Tedu.Identity.Infrastructure.Enities;
+using Tedu.Identity.Infrastructure.Entities;
 using Tedu.Identity.Infrastructure.Persistence;
 using Tedu.Identity.IDP.Services;
 using Tedu.Identity.Infrastructure.Exceptions;
@@ -102,19 +102,19 @@ internal static partial class HostingExtensions
         services.AddSwaggerGen(c =>
         {
             c.EnableAnnotations();
-            c.SwaggerDoc(SystemConstants.Swagger.Version1, new()
+            c.SwaggerDoc(SystemConstants.ConfigureOptions.Version1, new()
             {
-                Title = SystemConstants.Swagger.Title,
-                Version = SystemConstants.Swagger.Version1,
+                Title = SystemConstants.ConfigureOptions.Title,
+                Version = SystemConstants.ConfigureOptions.Version1,
                 Contact = new()
                 {
-                    Name = SystemConstants.Swagger.Name,
-                    Email = SystemConstants.Swagger.Email,
+                    Name = SystemConstants.ConfigureOptions.Name,
+                    Email = SystemConstants.ConfigureOptions.Email,
                     Url = new(identitySettings.ContactUrl)
                 }
             });
 
-            c.AddSecurityDefinition(SystemConstants.Swagger.Bearer, new()
+            c.AddSecurityDefinition(SystemConstants.ConfigureOptions.Bearer, new()
             {
                 Type = Microsoft.OpenApi.Models.SecuritySchemeType.OAuth2,
                 Flows = new()
@@ -124,8 +124,8 @@ internal static partial class HostingExtensions
                         AuthorizationUrl = new(identitySettings.AuthorizeUrl),
                         Scopes = new Dictionary<string, string>()
                         {
-                            { SystemConstants.TeduScopes.Read, SystemConstants.TeduScopes.ReadDisplayName },
-                            { SystemConstants.TeduScopes.Write, SystemConstants.TeduScopes.WriteDisplayName }
+                            { SystemConstants.ConfigureOptions.Read, SystemConstants.ConfigureOptions.ReadDisplayName },
+                            { SystemConstants.ConfigureOptions.Write, SystemConstants.ConfigureOptions.WriteDisplayName }
                         }
                     }
                 }
@@ -139,13 +139,13 @@ internal static partial class HostingExtensions
                         Reference = new()
                         {
                             Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                            Id = SystemConstants.Swagger.Bearer,
+                            Id = SystemConstants.ConfigureOptions.Bearer,
                         }
                     },
                     new List<string>()
                     {
-                        SystemConstants.TeduScopes.Read,
-                        SystemConstants.TeduScopes.Write
+                        SystemConstants.ConfigureOptions.Read,
+                        SystemConstants.ConfigureOptions.Write
                     }
                 }
             });
@@ -157,9 +157,9 @@ internal static partial class HostingExtensions
     public static IServiceCollection ConfigurationAuthentication(this IServiceCollection services)
     {
         services.AddAuthentication()
-            .AddLocalApi(SystemConstants.Swagger.Bearer, o =>
+            .AddLocalApi(SystemConstants.ConfigureOptions.Bearer, o =>
             {
-                o.ExpectedScope = SystemConstants.TeduScopes.Read;
+                o.ExpectedScope = SystemConstants.ConfigureOptions.Read;
             });
 
         return services;
@@ -169,9 +169,9 @@ internal static partial class HostingExtensions
     {
         services.AddAuthorization(o =>
         {
-            o.AddPolicy(SystemConstants.Swagger.Bearer, p =>
+            o.AddPolicy(SystemConstants.ConfigureOptions.Bearer, p =>
             {
-                p.AddAuthenticationSchemes(SystemConstants.Swagger.Bearer);
+                p.AddAuthenticationSchemes(SystemConstants.ConfigureOptions.Bearer);
                 p.RequireAuthenticatedUser();
             });
         });

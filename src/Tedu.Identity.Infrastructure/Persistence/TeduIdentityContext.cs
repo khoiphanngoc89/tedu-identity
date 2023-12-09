@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection.Emit;
-using Tedu.Identity.Infrastructure.Enities;
+using Tedu.Identity.Infrastructure.Entities;
 
 namespace Tedu.Identity.Infrastructure.Persistence;
 

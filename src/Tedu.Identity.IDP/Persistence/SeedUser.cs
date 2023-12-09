@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Tedu.Identity.Infrastructure.Const;
-using Tedu.Identity.Infrastructure.Enities;
+using Tedu.Identity.Infrastructure.Entities;
 using Tedu.Identity.Infrastructure.Persistence;
 
 namespace Tedu.Identity.IDP.Persistence;
@@ -42,7 +42,7 @@ public class SeedUser
         Id = Guid.NewGuid().ToString(),
         Password = SystemConstants.Database.Seeds.Password,
         Email = SystemConstants.Database.Seeds.Email,
-        Role = SystemConstants.Roles.Administrator
+        Role = SystemConstants.ConfigureOptions.Administrator
     };
 
     private static void CreateUser(IServiceScope scope, UserInfo userInfo)
@@ -74,10 +74,10 @@ public class SeedUser
 
         result = userManager.AddClaimsAsync(user, new Claim[]
         {
-                new (SystemConstants.Claims.UserName, user.UserName!),
-                new (SystemConstants.Claims.FirstName, user.FirstName),
-                new (SystemConstants.Claims.LastName, user.LastName),
-                new (SystemConstants.Claims.Roles, userInfo.Role),
+                new (SystemConstants.ConfigureOptions.UserName, user.UserName!),
+                new (SystemConstants.ConfigureOptions.FirstName, user.FirstName),
+                new (SystemConstants.ConfigureOptions.LastName, user.LastName),
+                new (SystemConstants.ConfigureOptions.Roles, userInfo.Role),
                 new (JwtClaimTypes.Address, user.Address),
                 new (JwtClaimTypes.Email, user.Email!),
                 new (ClaimTypes.NameIdentifier, user.Id)

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Tedu.Identity.Infrastructure.Domains;
 
-namespace Tedu.Identity.Infrastructure.Enities;
+namespace Tedu.Identity.Infrastructure.Entities;
 
 public class Permission : EntityBase<long>
 {

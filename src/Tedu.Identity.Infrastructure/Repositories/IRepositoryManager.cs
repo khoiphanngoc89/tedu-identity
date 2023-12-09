@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
-using Tedu.Identity.Infrastructure.Enities;
+using Tedu.Identity.Infrastructure.Entities;
 using Tedu.Identity.Infrastructure.Repositories;
 
 namespace Tedu.Identity.Infrastructure;
