@@ -28,13 +28,13 @@ public static partial class SystemConstants
 
     public static class TeduApiResources
     {
-        public const string Name = "tedu_microservice_api";
+        public const string Name = "tedu_microservices_api";
         public const string DisplayName = "Tedu Microservices API";
     }
 
-    public static class Seeders
+    public static class Roles
     {
-        public const string Adminstrator = nameof(Adminstrator);
+        public const string Administrator = nameof(Administrator);
         public const string Customer = nameof(Customer);
     }
 

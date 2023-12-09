@@ -30,17 +30,20 @@ public class SeedUser
 
         using var serviceProvider = services.BuildServiceProvider();
         using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
-        CreateUser(scope, new()
-        {
-            FirstName = SystemConstants.Database.Seeds.FirstName,
-            LastName = SystemConstants.Database.Seeds.LastName,
-            Address = SystemConstants.Database.Seeds.Address,
-            Id = Guid.NewGuid().ToString(),
-            Password = SystemConstants.Database.Seeds.Password,
-            Email = SystemConstants.Database.Seeds.Email,
-            Role = SystemConstants.Database.Seeds.Role,
-        });
+        CreateUser(scope, GenerateDefaultUser());
     }
+
+    private static UserInfo GenerateDefaultUser()
+    => new()
+    {
+        FirstName = SystemConstants.Database.Seeds.FirstName,
+        LastName = SystemConstants.Database.Seeds.LastName,
+        Address = SystemConstants.Database.Seeds.Address,
+        Id = Guid.NewGuid().ToString(),
+        Password = SystemConstants.Database.Seeds.Password,
+        Email = SystemConstants.Database.Seeds.Email,
+        Role = SystemConstants.Roles.Administrator
+    };
 
     private static void CreateUser(IServiceScope scope, UserInfo userInfo)
     {
@@ -48,43 +51,41 @@ public class SeedUser
         var user = userManager.FindByNameAsync(userInfo.Email).Result;
         IdentityResult result;
 
-        if (user is null)
+        if (user is not null)
         {
-            user = new()
-            {
-                UserName = userInfo.Email,
-                Email = userInfo.Email,
-                FirstName = userInfo.FirstName,
-                LastName = userInfo.LastName,
-                Address = userInfo.Address,
-                EmailConfirmed = true,
-                Id = Guid.NewGuid().ToString(),
-            };
-
-            result = userManager.CreateAsync(user, userInfo.Password).Result;
-            Preconditions(result);
+            return;
         }
 
-        var roles = userManager.GetRolesAsync(user).Result;
-
-        if (roles.IsNullOrEmpty())
+        user = new()
         {
-            var addRole = userManager.AddToRoleAsync(user, userInfo.Role).Result;
-            Preconditions(addRole);
-        }
+            UserName = userInfo.Email,
+            Email = userInfo.Email,
+            FirstName = userInfo.FirstName,
+            LastName = userInfo.LastName,
+            Address = userInfo.Address,
+            EmailConfirmed = true,
+            Id = Guid.NewGuid().ToString(),
+        };
+
+        result = userManager.CreateAsync(user, userInfo.Password).Result;
+        Preconditions(result);
+        var addRole = userManager.AddToRoleAsync(user, userInfo.Role).Result;
+        Preconditions(addRole);
 
         result = userManager.AddClaimsAsync(user, new Claim[]
         {
-                new(SystemConstants.Claims.UserName, user.UserName!),
-                new(SystemConstants.Claims.FirstName, user.FirstName),
-                new(SystemConstants.Claims.LastName, user.LastName),
-                new(SystemConstants.Claims.Roles, userInfo.Role),
-                new(JwtClaimTypes.Address, user.Address),
-                new(JwtClaimTypes.Email, user.Email!),
-                new(ClaimTypes.NameIdentifier, user.Id)
+                new (SystemConstants.Claims.UserName, user.UserName!),
+                new (SystemConstants.Claims.FirstName, user.FirstName),
+                new (SystemConstants.Claims.LastName, user.LastName),
+                new (SystemConstants.Claims.Roles, userInfo.Role),
+                new (JwtClaimTypes.Address, user.Address),
+                new (JwtClaimTypes.Email, user.Email!),
+                new (ClaimTypes.NameIdentifier, user.Id)
         }).Result;
 
         Preconditions(result);
+
+
     }
 
     private static void Preconditions(IdentityResult result)

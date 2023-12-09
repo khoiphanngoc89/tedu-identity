@@ -12,8 +12,8 @@ using Tedu.Identity.Infrastructure.Persistence;
 namespace Tedu.Identity.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(TeduIdentityContext))]
-    [Migration("20231127030123_Init_Identity")]
-    partial class Init_Identity
+    [Migration("20231209043349_Modify_Permission")]
+    partial class Modify_Permission
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,15 +49,15 @@ namespace Tedu.Identity.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5c5aacfb-335d-4589-8b04-d9ac7437aba6",
-                            ConcurrencyStamp = "29099061-e1e9-4195-a5d7-42863a1858a4",
-                            Name = "Adminstrator",
-                            NormalizedName = "ADMINSTRATOR"
+                            Id = "c5de19fb-238c-4cd3-9bcf-a938425bd3b8",
+                            ConcurrencyStamp = "289dab67-29af-4d14-9cba-e4eaa6a93c22",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "5ef46701-659c-4582-ac1c-6201a77feadd",
-                            ConcurrencyStamp = "e2dd3575-1777-4808-8007-e8fc2ff15a7d",
+                            Id = "32948f7f-c06a-4c3e-bb7d-bcd55ba35053",
+                            ConcurrencyStamp = "4a9188f3-bbb0-4627-b2bf-bb9eda4539f2",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -184,9 +184,6 @@ namespace Tedu.Identity.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id", "Command", "Function");
 
-                    b.HasIndex("RoleId")
-                        .IsUnique();
-
                     b.HasIndex("RoleId", "Function", "Command");
 
                     b.ToTable("Permissions", "Identity");
@@ -266,17 +263,6 @@ namespace Tedu.Identity.Infrastructure.Persistence.Migrations
                     b.HasIndex("Email");
 
                     b.ToTable("User", "Identity");
-                });
-
-            modelBuilder.Entity("Tedu.Identity.Infrastructure.Enities.Permission", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
-                        .WithOne()
-                        .HasForeignKey("Tedu.Identity.Infrastructure.Enities.Permission", "RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,7 +4,7 @@ public static partial class SystemConstants
 {
     public static class Database
     {
-        public class Schemes
+        public static class Schemes
         {
             public const string IdentityScheme = "Identity";
         }
@@ -38,7 +38,7 @@ public static partial class SystemConstants
             public const string Address = "Wollongong";
             public const string Password = "alice123";
             public const string Email = "alice.smith@example.com";
-            public const string Role = "Adminstrator";
+            public const string Role = "Administrator";
         }
     }
 }

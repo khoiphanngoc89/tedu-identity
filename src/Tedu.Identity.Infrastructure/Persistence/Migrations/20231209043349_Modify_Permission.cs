@@ -8,13 +8,29 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tedu.Identity.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Init_Identity : Migration
+    public partial class Modify_Permission : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
                 name: "Identity");
+
+            migrationBuilder.CreateTable(
+                name: "Permissions",
+                schema: "Identity",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Function = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Command = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => new { x.Id, x.Command, x.Function });
+                });
 
             migrationBuilder.CreateTable(
                 name: "Role",
@@ -134,45 +150,15 @@ namespace Tedu.Identity.Infrastructure.Persistence.Migrations
                     table.PrimaryKey("PK_UserToken", x => x.UserId);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Permissions",
-                schema: "Identity",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Function = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Command = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    RoleId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Permissions", x => new { x.Id, x.Command, x.Function });
-                    table.ForeignKey(
-                        name: "FK_Permissions_Role_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "Identity",
-                        principalTable: "Role",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 schema: "Identity",
                 table: "Role",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "5c5aacfb-335d-4589-8b04-d9ac7437aba6", "29099061-e1e9-4195-a5d7-42863a1858a4", "Adminstrator", "ADMINSTRATOR" },
-                    { "5ef46701-659c-4582-ac1c-6201a77feadd", "e2dd3575-1777-4808-8007-e8fc2ff15a7d", "Customer", "CUSTOMER" }
+                    { "32948f7f-c06a-4c3e-bb7d-bcd55ba35053", "4a9188f3-bbb0-4627-b2bf-bb9eda4539f2", "Customer", "CUSTOMER" },
+                    { "c5de19fb-238c-4cd3-9bcf-a938425bd3b8", "289dab67-29af-4d14-9cba-e4eaa6a93c22", "Administrator", "ADMINISTRATOR" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Permissions_RoleId",
-                schema: "Identity",
-                table: "Permissions",
-                column: "RoleId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Permissions_RoleId_Function_Command",
@@ -192,6 +178,10 @@ namespace Tedu.Identity.Infrastructure.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Permissions",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "Role",
                 schema: "Identity");
 
             migrationBuilder.DropTable(
@@ -216,10 +206,6 @@ namespace Tedu.Identity.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserToken",
-                schema: "Identity");
-
-            migrationBuilder.DropTable(
-                name: "Role",
                 schema: "Identity");
         }
     }

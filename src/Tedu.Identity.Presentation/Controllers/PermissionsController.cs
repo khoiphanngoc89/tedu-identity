@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Tedu.Identity.Infrastructure;
 using Tedu.Identity.Infrastructure.Const;
@@ -8,6 +9,7 @@ namespace Tedu.Identity.Presentation.Controllers;
 
 [ApiController]
 [Route(SystemConstants.Routes.PermissionApi)]
+[Authorize(SystemConstants.Swagger.Bearer)]
 public sealed class PermissionsController : ControllerBase
 {
     private readonly IRepositoryManager repository;

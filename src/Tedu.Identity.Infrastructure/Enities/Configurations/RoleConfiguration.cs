@@ -11,15 +11,15 @@ public class RoleConfiguration : IEntityTypeConfiguration<IdentityRole>
     {
         builder.HasData(new()
         {
-            Name = SystemConstants.Seeders.Adminstrator,
-            NormalizedName = SystemConstants.Seeders.Adminstrator.ToUpper(),
+            Name = SystemConstants.Roles.Administrator,
+            NormalizedName = SystemConstants.Roles.Administrator.ToUpper(),
             Id = Guid.NewGuid().ToString(),
             ConcurrencyStamp = Guid.NewGuid().ToString()
         },
         new()
         {
-            Name = SystemConstants.Seeders.Customer,
-            NormalizedName = SystemConstants.Seeders.Customer.ToUpper(),
+            Name = SystemConstants.Roles.Customer,
+            NormalizedName = SystemConstants.Roles.Customer.ToUpper(),
             Id = Guid.NewGuid().ToString(),
             ConcurrencyStamp = Guid.NewGuid().ToString()
         });

@@ -1,6 +1,7 @@
 ﻿using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
 using Microsoft.EntityFrameworkCore;
+using Tedu.Identity.Infrastructure.Persistence;
 
 namespace Tedu.Identity.IDP.Persistence;
 
@@ -15,9 +16,14 @@ public static class IdentitySeed
         using var context = scope.ServiceProvider
             .GetRequiredService<ConfigurationDbContext>();
 
+        using var teduContext = scope.ServiceProvider
+           .GetRequiredService<TeduIdentityContext>();
+
         try
         {
+            teduContext.Database.Migrate();
             context.Database.Migrate();
+
             if (!context.Clients.Any())
             {
                 foreach (var client in Config.Clients)

@@ -12,10 +12,12 @@ internal static partial class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddControllersWithViews();
+        builder.Services.AddConfigurationSettings(builder.Configuration);
+
         // uncomment if you want to add a UI
         builder.Services.AddRazorPages();
 
-        builder.Services.AddConfigurationSettings(builder.Configuration);
         builder.Services.ConfigureCookiePolicy();
         builder.Services.ConfigureCors();
 
@@ -36,7 +38,11 @@ internal static partial class HostingExtensions
             config.Filters.Add(new ProducesAttribute("application/json", "text/plain", "text/json"));
         }).AddApplicationPart(typeof(IAssemblyReference).Assembly);
 
+        builder.Services.ConfigurationAuthentication();
+        builder.Services.ConfigurationAuthorization();
+
         builder.Services.ConfigureSwagger(builder.Configuration);
+        builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
         return builder.Build();
     }

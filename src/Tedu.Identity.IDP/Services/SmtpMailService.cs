@@ -1,36 +1,36 @@
 ﻿using System.Net.Mail;
 using System.Net;
-using Tedu.Identity.IDP.Common.Settings;
+using Tedu.Identity.Infrastructure.Settings;
 
 namespace Tedu.Identity.IDP.Services;
 
-public class SmtpMailService : IEmailSender
+public sealed class SmtpMailService : IEmailSender
 {
-    private readonly SmtpEmailSettings _settings;
+    private readonly SmtpEmailSettings settings;
 
     public SmtpMailService(SmtpEmailSettings settings)
     {
-         _settings = settings;
+         this.settings = settings;
     }
 
     public void SendEmail(string recipient, string subject, string body, bool isBodyHtml = false, string? sender = null)
     {
-        var message = new MailMessage(_settings.From, recipient)
+        var message = new MailMessage(this.settings.From, recipient)
         {
             Subject = subject,
             Body = body,
             IsBodyHtml = isBodyHtml,
-            From = new MailAddress(_settings.From, !string.IsNullOrEmpty(sender) ? sender : _settings.From),
+            From = new MailAddress(settings.From, !string.IsNullOrEmpty(sender) ? sender : settings.From),
         };
 
-        using var client = new SmtpClient(_settings.SmtpServer, _settings.Port)
+        using var client = new SmtpClient(settings.SmtpServer, settings.Port)
         {
-            EnableSsl = _settings.UseSsl
+            EnableSsl = settings.UseSsl
         };
 
-        if (!string.IsNullOrWhiteSpace(_settings.Username) || !string.IsNullOrWhiteSpace(_settings.Password))
+        if (!string.IsNullOrWhiteSpace(settings.Username) || !string.IsNullOrWhiteSpace(settings.Password))
         {
-            client.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            client.Credentials = new NetworkCredential(settings.Username, settings.Password);
         }
         else
         {

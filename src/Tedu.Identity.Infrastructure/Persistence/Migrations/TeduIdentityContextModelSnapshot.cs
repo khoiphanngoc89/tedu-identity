@@ -46,15 +46,15 @@ namespace Tedu.Identity.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9ffc82bd-d478-40c1-a535-20e8b122a0d1",
-                            ConcurrencyStamp = "b5ea9e51-fd76-4486-803f-84e0287c3aa5",
-                            Name = "Adminstrator",
-                            NormalizedName = "ADMINSTRATOR"
+                            Id = "c5de19fb-238c-4cd3-9bcf-a938425bd3b8",
+                            ConcurrencyStamp = "289dab67-29af-4d14-9cba-e4eaa6a93c22",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "bcc72696-ce79-44ae-8d5f-9c8a8be76f71",
-                            ConcurrencyStamp = "ac84f98d-810d-4239-9699-116956e3154a",
+                            Id = "32948f7f-c06a-4c3e-bb7d-bcd55ba35053",
+                            ConcurrencyStamp = "4a9188f3-bbb0-4627-b2bf-bb9eda4539f2",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

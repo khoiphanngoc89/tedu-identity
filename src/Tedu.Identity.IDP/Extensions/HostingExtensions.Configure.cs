@@ -2,20 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Tedu.Identity.Infrastructure.Const;
-using Tedu.Identity.IDP.Common.Settings;
+using Tedu.Identity.Infrastructure.Settings;
 using Tedu.Identity.Infrastructure.Enities;
 using Tedu.Identity.Infrastructure.Persistence;
 using Tedu.Identity.IDP.Services;
-using Microsoft.Extensions.Configuration;
+using Tedu.Identity.Infrastructure.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Tedu.Identity.IDP.Extensions;
 
 internal static partial class HostingExtensions
 {
     public static string GetConnectionString(this IConfiguration configuration)
-    {
-        return configuration.GetConnectionString("IdentitySqlConnection") ?? throw new ArgumentNullException("connectionStrings");
-    }
+        => configuration.GetConnectionString("IdentitySqlConnection") ?? throw new ConnectionStringNotFoundException();
 
     internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services, IConfiguration configuration)
     {
@@ -91,11 +90,19 @@ internal static partial class HostingExtensions
 
     public static IServiceCollection ConfigureSwagger(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(options =>
+        var identitySettings = configuration.GetSection(nameof(IdentityServerSettings))
+            .Get<IdentityServerSettings>();
+
+        if (identitySettings is null)
         {
-            options.EnableAnnotations();
-            options.SwaggerDoc(SystemConstants.Swagger.Version1, new()
+            throw new NoNullAllowedException(nameof(identitySettings));
+        }
+
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(c =>
+        {
+            c.EnableAnnotations();
+            c.SwaggerDoc(SystemConstants.Swagger.Version1, new()
             {
                 Title = SystemConstants.Swagger.Title,
                 Version = SystemConstants.Swagger.Version1,
@@ -103,12 +110,72 @@ internal static partial class HostingExtensions
                 {
                     Name = SystemConstants.Swagger.Name,
                     Email = SystemConstants.Swagger.Email,
-                    Url = new("https://kietpham.dev")
+                    Url = new(identitySettings.ContactUrl)
                 }
             });
 
+            c.AddSecurityDefinition(SystemConstants.Swagger.Bearer, new()
+            {
+                Type = Microsoft.OpenApi.Models.SecuritySchemeType.OAuth2,
+                Flows = new()
+                {
+                    Implicit = new()
+                    {
+                        AuthorizationUrl = new(identitySettings.AuthorizeUrl),
+                        Scopes = new Dictionary<string, string>()
+                        {
+                            { SystemConstants.TeduScopes.Read, SystemConstants.TeduScopes.ReadDisplayName },
+                            { SystemConstants.TeduScopes.Write, SystemConstants.TeduScopes.WriteDisplayName }
+                        }
+                    }
+                }
+            });
 
+            c.AddSecurityRequirement(new()
+            {
+                {
+                    new()
+                    {
+                        Reference = new()
+                        {
+                            Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                            Id = SystemConstants.Swagger.Bearer,
+                        }
+                    },
+                    new List<string>()
+                    {
+                        SystemConstants.TeduScopes.Read,
+                        SystemConstants.TeduScopes.Write
+                    }
+                }
+            });
         });
+
+        return services;
+    }
+
+    public static IServiceCollection ConfigurationAuthentication(this IServiceCollection services)
+    {
+        services.AddAuthentication()
+            .AddLocalApi(SystemConstants.Swagger.Bearer, o =>
+            {
+                o.ExpectedScope = SystemConstants.TeduScopes.Read;
+            });
+
+        return services;
+    }
+
+    public static IServiceCollection ConfigurationAuthorization(this IServiceCollection services)
+    {
+        services.AddAuthorization(o =>
+        {
+            o.AddPolicy(SystemConstants.Swagger.Bearer, p =>
+            {
+                p.AddAuthenticationSchemes(SystemConstants.Swagger.Bearer);
+                p.RequireAuthenticatedUser();
+            });
+        });
+
         return services;
     }
 }

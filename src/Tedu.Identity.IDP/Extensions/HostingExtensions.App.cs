@@ -20,7 +20,12 @@ internal static partial class HostingExtensions
 
         // swagger
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwaggerUI(c =>
+        {
+            c.OAuthClientId(SystemConstants.TeduClients.DefaultClients.ClientId);
+            c.SwaggerEndpoint(SystemConstants.Swagger.Url, SystemConstants.Swagger.EndpointName);
+            c.DisplayRequestDuration();
+        });
 
         app.UseRouting();
 
@@ -32,7 +37,7 @@ internal static partial class HostingExtensions
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapDefaultControllerRoute().RequireAuthorization();
+            endpoints.MapDefaultControllerRoute().RequireAuthorization(SystemConstants.Swagger.Bearer);
             endpoints.MapRazorPages().RequireAuthorization();
         });
 
