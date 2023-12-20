@@ -83,6 +83,7 @@ internal static partial class HostingExtensions
                     options.Lockout.MaxFailedAccessAttempts = 5;
                 })
                 .AddEntityFrameworkStores<TeduIdentityContext>()
+                .AddUserStore<TeduUserStore>()
                 .AddDefaultTokenProviders();
 
         return services;

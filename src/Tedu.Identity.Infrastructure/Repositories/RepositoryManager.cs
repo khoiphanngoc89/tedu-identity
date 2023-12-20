@@ -27,7 +27,7 @@ public class RepositoryManager : IRepositoryManager
         this.UserManager = userManager;
         this.RoleManager = roleManager;
 
-        this.permissionRepository = new Lazy<IPermissionRepository>(() => new PermissionRepository(dbContext, unitOfWork));
+        this.permissionRepository = new Lazy<IPermissionRepository>(() => new PermissionRepository(dbContext, unitOfWork, this.UserManager));
     }
 
     private Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)

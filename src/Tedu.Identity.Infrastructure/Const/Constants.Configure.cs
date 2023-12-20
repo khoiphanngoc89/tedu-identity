@@ -28,6 +28,7 @@ public static partial class SystemConstants
         public const string Bearer = nameof(Bearer);
         public const string Url = "/swagger/v1/swagger.json";
         public const string EndpointName = "Tedu Identity API";
+        public const string Permissions = "permissions";
     }
 
     public static class PostmanClients

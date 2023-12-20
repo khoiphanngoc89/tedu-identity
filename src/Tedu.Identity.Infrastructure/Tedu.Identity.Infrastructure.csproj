@@ -21,4 +21,8 @@
     <Folder Include="Persistence\Migrations\" />
   </ItemGroup>
 
+  <!--https://github.com/dotnet/aspnetcore/issues/48920-->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 </Project>

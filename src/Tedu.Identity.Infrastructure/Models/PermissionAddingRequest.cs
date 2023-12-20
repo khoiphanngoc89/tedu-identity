@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tedu.Identity.Infrastructure.ViewModels;
+namespace Tedu.Identity.Infrastructure.Models;
 
 public class PermissionAddingRequest
 {

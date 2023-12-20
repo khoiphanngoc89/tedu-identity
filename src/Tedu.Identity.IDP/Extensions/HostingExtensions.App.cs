@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Tedu.Identity.IDP.Middlewares;
 using Tedu.Identity.Infrastructure.Const;
 
 namespace Tedu.Identity.IDP.Extensions;
@@ -28,6 +29,8 @@ internal static partial class HostingExtensions
         });
 
         app.UseRouting();
+
+        app.UseMiddleware<ErrorWrappingMiddleware>();
 
         // set cookie policy before auth authorization setup
         app.UseCookiePolicy();

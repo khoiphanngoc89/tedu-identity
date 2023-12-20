@@ -13,6 +13,14 @@ public class Permission : EntityBase<long>
     [ForeignKey(nameof(RoleId))]
     public virtual IdentityRole? Role { get; }
 
+    public Permission(long id, string function, string command, string roleId)
+    {
+        this.Id = id;
+        this.Function = function?.ToUpper();
+        this.Command = command?.ToUpper();
+        this.RoleId = roleId;
+    }
+
     public Permission(string function, string command, string roleId)
     {
         this.Function = function?.ToUpper();

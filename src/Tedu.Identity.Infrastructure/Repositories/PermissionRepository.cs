@@ -1,19 +1,23 @@
 ﻿using Tedu.Identity.Infrastructure.Entities;
 using Tedu.Identity.Infrastructure.Domains;
 using Tedu.Identity.Infrastructure.Persistence;
-using Tedu.Identity.Infrastructure.ViewModels;
+using Tedu.Identity.Infrastructure.Models;
 using Tedu.Identity.Infrastructure.Repositories;
 using Dapper;
 using System.Data;
 using Tedu.Identity.Infrastructure.Helpers;
+using Microsoft.AspNetCore.Identity;
+using Tedu.Identity.Infrastructure.Models.Mappings;
 
 namespace Tedu.Identity.Infrastructure;
 
 public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPermissionRepository
 {
-    public PermissionRepository(TeduIdentityContext dbContext, IUnitOfWork unitOfWork)
+    private readonly UserManager<User> userManager;
+    public PermissionRepository(TeduIdentityContext dbContext, IUnitOfWork unitOfWork, UserManager<User> userManager)
         : base(dbContext, unitOfWork)
     {
+        this.userManager = userManager;
     }
 
     private Task<IReadOnlyList<PermissionResponse>> GetPermissionsByRoleAsync(string roleId, CancellationToken cancellationToken)
@@ -46,7 +50,7 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
 
         foreach (var permission in permissions)
         {
-            dt.Rows.Add(roleId, permission.Function, permission.Command);
+            dt.Rows.Add(roleId, permission.Function?.ToUpper(), permission.Command?.ToUpper());
         }
 
         var parameters = new DynamicParameters();
@@ -104,6 +108,23 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
         await this.ExecuteAsync("DeletePermission", parameters, cancellationToken: cancellationToken);
     }
 
+    private Task<IEnumerable<PermissionUserResponse>> GetPermissionByUserAsync(User user, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+
+        return this.HandleGetPermissionByUserAsync(user, cancellationToken);
+    }
+
+    private async Task<IEnumerable<PermissionUserResponse>> HandleGetPermissionByUserAsync(User user, CancellationToken cancellationToken)
+    {
+        var userRoles = await this.userManager.GetRolesAsync(user);
+        var query = this.FindAll()
+                          .Where(x => userRoles.Contains(x.RoleId))
+                          .Select(x => new Permission(x.Id, x.Function!, x.Command!, x.RoleId));
+
+        return query.ToList()!.Select(x => x.ToPermissionUserResponse());
+    }
+
     #region Implemetation of IPermissionRepository
 
     Task<IReadOnlyList<PermissionResponse>> IPermissionRepository.GetAllByRoleAsync(string roleId, CancellationToken cancellationToken)
@@ -115,8 +136,11 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
     Task<PermissionResponse?> IPermissionRepository.CreatePermissionAsync(string roleId, PermissionAddingRequest model, CancellationToken cancellationToken)
         => this.CreatePermissionAsync(roleId, model, cancellationToken);
 
-    Task IPermissionRepository.DeletePermissionAsync(string roleId, string function, string command, System.Threading.CancellationToken cancellationToken)
+    Task IPermissionRepository.DeletePermissionAsync(string roleId, string function, string command, CancellationToken cancellationToken)
         => this.DeletePermissionAsync(roleId, function, command, cancellationToken);
+
+    Task<IEnumerable<PermissionUserResponse>> IPermissionRepository.GetPermissionByUserAsync(User user, CancellationToken cancellationToken = default)
+        => this.GetPermissionByUserAsync(user, cancellationToken);
 
     #endregion
 }

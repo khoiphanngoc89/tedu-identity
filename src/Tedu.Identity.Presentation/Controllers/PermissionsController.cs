@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Tedu.Identity.Infrastructure;
 using Tedu.Identity.Infrastructure.Const;
-using Tedu.Identity.Infrastructure.ViewModels;
+using Tedu.Identity.Infrastructure.Models;
 
 namespace Tedu.Identity.Presentation.Controllers;
 
