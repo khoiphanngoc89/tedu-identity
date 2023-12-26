@@ -23,7 +23,7 @@ internal static partial class HostingExtensions
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
-            c.OAuthClientId(SystemConstants.TeduClients.ClientId);
+            c.OAuthClientId(SystemConstants.SwaggerClients.ClientId);
             c.SwaggerEndpoint(SystemConstants.ConfigureOptions.Url, SystemConstants.ConfigureOptions.EndpointName);
             c.DisplayRequestDuration();
         });

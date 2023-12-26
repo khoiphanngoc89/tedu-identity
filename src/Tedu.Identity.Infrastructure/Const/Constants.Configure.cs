@@ -17,7 +17,7 @@ public static partial class SystemConstants
         public const string ReadDisplayName = "Tedu Microserives API Read Scope";
         public const string Write = "tedu_microservices_api.write";
         public const string WriteDisplayName = "Tedu Microserives API Write Scope";
-        public const string Name = "tedu_microservices_api";
+        public const string TeduApiName = "tedu_microservices_api";
         public const string DisplayName = "Tedu Microservices API";
         public const string Administrator = nameof(Administrator);
         public const string Customer = nameof(Customer);
@@ -38,7 +38,7 @@ public static partial class SystemConstants
         public const string ClientSecret = "SuperStrongSecret";
     }
 
-    public static class TeduClients
+    public static class SwaggerClients
     {
         public const string ClientName = "Tedu Microservices Swagger Client";
         public const string ClientId = "tedu_microservices_swagger";

@@ -8,6 +8,7 @@ using Tedu.Identity.Infrastructure.Persistence;
 using Tedu.Identity.IDP.Services;
 using Tedu.Identity.Infrastructure.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
+using IdentityServer4.AccessTokenValidation;
 
 namespace Tedu.Identity.IDP.Extensions;
 
@@ -109,20 +110,20 @@ internal static partial class HostingExtensions
                 Version = SystemConstants.ConfigureOptions.Version1,
                 Contact = new()
                 {
-                    Name = SystemConstants.ConfigureOptions.Name,
+                    Name = SystemConstants.ConfigureOptions.TeduApiName,
                     Email = SystemConstants.ConfigureOptions.Email,
                     Url = new(identitySettings.ContactUrl)
                 }
             });
 
-            c.AddSecurityDefinition(SystemConstants.ConfigureOptions.Bearer, new()
+            c.AddSecurityDefinition(IdentityServerAuthenticationDefaults.AuthenticationScheme, new()
             {
                 Type = Microsoft.OpenApi.Models.SecuritySchemeType.OAuth2,
                 Flows = new()
                 {
                     Implicit = new()
                     {
-                        AuthorizationUrl = new(identitySettings.AuthorizeUrl),
+                        AuthorizationUrl = new($"{identitySettings.AuthorizeUrl}/connect/authorize"),
                         Scopes = new Dictionary<string, string>()
                         {
                             { SystemConstants.ConfigureOptions.Read, SystemConstants.ConfigureOptions.ReadDisplayName },
@@ -140,8 +141,8 @@ internal static partial class HostingExtensions
                         Reference = new()
                         {
                             Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                            Id = SystemConstants.ConfigureOptions.Bearer,
-                        }
+                            Id = IdentityServerAuthenticationDefaults.AuthenticationScheme,
+                        },
                     },
                     new List<string>()
                     {
@@ -158,7 +159,7 @@ internal static partial class HostingExtensions
     public static IServiceCollection ConfigurationAuthentication(this IServiceCollection services)
     {
         services.AddAuthentication()
-            .AddLocalApi(SystemConstants.ConfigureOptions.Bearer, o =>
+            .AddLocalApi(IdentityServerAuthenticationDefaults.AuthenticationScheme, o =>
             {
                 o.ExpectedScope = SystemConstants.ConfigureOptions.Read;
             });
@@ -170,13 +171,24 @@ internal static partial class HostingExtensions
     {
         services.AddAuthorization(o =>
         {
-            o.AddPolicy(SystemConstants.ConfigureOptions.Bearer, p =>
+            o.AddPolicy(IdentityServerAuthenticationDefaults.AuthenticationScheme, p =>
             {
-                p.AddAuthenticationSchemes(SystemConstants.ConfigureOptions.Bearer);
+                p.AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme);
                 p.RequireAuthenticatedUser();
             });
         });
 
         return services;
+    }
+
+    public static void ConfigureCors(this IServiceCollection services)
+    {
+        services.AddCors(opt =>
+        {
+            opt.AddPolicy(SystemConstants.ConfigureOptions.CorsPolicy, builder => builder.AllowAnyOrigin()
+                                                                                .AllowAnyMethod()
+                                                                                .AllowAnyHeader());
+
+        });
     }
 }

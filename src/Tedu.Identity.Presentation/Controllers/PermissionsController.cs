@@ -9,7 +9,7 @@ namespace Tedu.Identity.Presentation.Controllers;
 
 [ApiController]
 [Route(SystemConstants.Routes.PermissionApi)]
-[Authorize(SystemConstants.ConfigureOptions.Bearer)]
+[Authorize()]
 public sealed class PermissionsController : ControllerBase
 {
     private readonly IRepositoryManager repository;

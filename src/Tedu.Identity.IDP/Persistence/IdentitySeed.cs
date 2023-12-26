@@ -10,8 +10,10 @@ public static class IdentitySeed
     public static IHost MigrateDatabase(this IHost host)
     {
         using var scope = host.Services.CreateScope();
-        scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>()
-            .Database.Migrate();
+        scope.ServiceProvider
+            .GetRequiredService<PersistedGrantDbContext>()
+            .Database
+            .Migrate();
 
         using var context = scope.ServiceProvider
             .GetRequiredService<ConfigurationDbContext>();
@@ -60,13 +62,16 @@ public static class IdentitySeed
                 {
                     context.ApiResources.Add(resource.ToEntity());
                 }
+
+                context.SaveChanges();
             }
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.WriteLine(ex);
+            Console.WriteLine(e);
             throw;
         }
+
         return host;
     }
 }

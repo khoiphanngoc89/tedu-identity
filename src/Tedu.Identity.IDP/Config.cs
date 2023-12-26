@@ -15,6 +15,7 @@ public static class Config
             new IdentityResource
             {
                 Name = SystemConstants.ConfigureOptions.Roles,
+                DisplayName = "User role(s)",
                 UserClaims = new List<string>
                 {
                     SystemConstants.ConfigureOptions.Roles,
@@ -22,16 +23,6 @@ public static class Config
             },
         };
 
-    public static void ConfigureCors(this IServiceCollection services)
-    {
-        services.AddCors(opt =>
-        {
-            opt.AddPolicy(SystemConstants.ConfigureOptions.CorsPolicy, builder => builder.AllowAnyOrigin()
-                                                                                .AllowAnyMethod()
-                                                                                .AllowAnyHeader());
-
-        });
-    }
 
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
@@ -43,7 +34,7 @@ public static class Config
     public static IEnumerable<ApiResource> ApiResources =>
         new ApiResource[]
             {
-                new (SystemConstants.ConfigureOptions.Name, SystemConstants.ConfigureOptions.DisplayName)
+                new (SystemConstants.ConfigureOptions.TeduApiName, SystemConstants.ConfigureOptions.DisplayName)
                 {
                     Scopes = new List<string>()
                     {
@@ -62,30 +53,33 @@ public static class Config
         {
             new()
             {
-                ClientName = SystemConstants.TeduClients.ClientName,
-                ClientId = SystemConstants.TeduClients.ClientId,
+                ClientName = SystemConstants.SwaggerClients.ClientName,
+                ClientId = SystemConstants.SwaggerClients.ClientId,
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
-                AccessTokenLifetime = SystemConstants.TeduClients.TokenLifeTime,
+                AccessTokenLifetime = SystemConstants.SwaggerClients.TokenLifeTime,
                 RedirectUris = new List<string>()
                 {
-                    "http://localhost:5001/swagger/oauth2-redirect.html"
+                    "http://localhost:5001/swagger/oauth2-redirect.html",
+                    "http://localhost:5002/swagger/oauth2-redirect.html"
                 },
                 PostLogoutRedirectUris = new List<string>()
                 {
-                    "http://localhost:5001/swagger/oauth2-redirect.html"
+                    "http://localhost:5001/swagger/oauth2-redirect.html",
+                    "http://localhost:5002/swagger/oauth2-redirect.html"
                 },
                 AllowedCorsOrigins = new List<string>()
                 {
-                    "http://localhost:5001"
+                    "http://localhost:5001",
+                    "http://localhost:5002"
                 },
                 AllowedScopes = new List<string>()
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
-                    SystemConstants.ConfigureOptions.Roles,
+                    SystemConstants.ConfigureOptions.TeduApiName,
                     SystemConstants.ConfigureOptions.Read,
                     SystemConstants.ConfigureOptions.Write
                 }
@@ -107,7 +101,7 @@ public static class Config
                     GrantType.ResourceOwnerPassword
                 },
                 RequireConsent = false,
-                AccessTokenLifetime = SystemConstants.TeduClients.TokenLifeTime,
+                AccessTokenLifetime = SystemConstants.SwaggerClients.TokenLifeTime,
                 AllowOfflineAccess = true,
                 RedirectUris = new List<string>()
                 {
