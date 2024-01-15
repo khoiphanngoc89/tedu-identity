@@ -99,19 +99,18 @@ public sealed class PermissionRepository : RepositoryBase<long, Permission>, IPe
         return this.HandleDeletePermissionAsync(roleId, function, command, cancellationToken);
     }
 
-    private async Task HandleDeletePermissionAsync(string roleId, string function, string command, CancellationToken cancellationToken)
+    private Task HandleDeletePermissionAsync(string roleId, string function, string command, CancellationToken cancellationToken)
     {
         var parameters = new DynamicParameters();
         parameters.Add("@roleId", roleId, DbType.String);
         parameters.Add("@function", function, DbType.String);
         parameters.Add("@command", command, DbType.String);
-        await this.ExecuteAsync("DeletePermission", parameters, cancellationToken: cancellationToken);
+        return this.ExecuteAsync("DeletePermission", parameters, cancellationToken: cancellationToken);
     }
 
     private Task<IEnumerable<PermissionUserResponse>> GetPermissionByUserAsync(User user, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(user);
-
         return this.HandleGetPermissionByUserAsync(user, cancellationToken);
     }
 

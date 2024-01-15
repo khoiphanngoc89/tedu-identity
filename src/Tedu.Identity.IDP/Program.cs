@@ -17,7 +17,10 @@ try
         .ConfigurePipeline();
 
     app.MigrateDatabase();
-    SeedUser.EnsureSeedUser(builder.Configuration.GetConnectionString());
+    if (app.Environment.IsDevelopment())
+    {
+        SeedUser.EnsureSeedUser(builder.Configuration.GetConnectionString());
+    }
 
     app.Run();
 }

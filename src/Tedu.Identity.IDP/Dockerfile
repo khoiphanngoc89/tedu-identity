@@ -7,7 +7,8 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Tedu.Identity.IDP/Tedu.Identity.IDP.csproj", "Tedu.Identity.IDP/"]
-COPY ["Tedu.Identity.Common/Tedu.Identity.Common.csproj", "Tedu.Identity.Common/"]
+COPY ["Tedu.Identity.Common/Tedu.Identity.Infrastructure.csproj", "Tedu.Identity.Infrastructure/"]
+COPY ["Tedu.Identity.Common/Tedu.Identity.Presentation.csproj", "Tedu.Identity.Presentation/"]
 RUN dotnet restore "Tedu.Identity.IDP/Tedu.Identity.IDP.csproj"
 COPY . .
 WORKDIR "/src/Tedu.Identity.IDP"
